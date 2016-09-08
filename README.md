@@ -3,6 +3,10 @@
 `apng-js` provides functions for parse and render animated PNG's 
 ([APNG](https://en.wikipedia.org/wiki/APNG)).
  
+## Demo
+
+[https://davidmz.github.io/apng-js/](https://davidmz.github.io/apng-js/)
+ 
 ## Usage
 `npm install apng-js`
  
