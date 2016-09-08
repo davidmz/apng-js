@@ -6,7 +6,9 @@ module.exports = [
         entry: path.join(__dirname, "src", "library", "index.js"),
         output: {
             path: path.join(__dirname, "lib"),
-            filename: "index.js"
+            filename: "index.js",
+            library: 'apng-js',
+            libraryTarget: 'umd'
         },
         module: {
             loaders: [
