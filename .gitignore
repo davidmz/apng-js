@@ -1,0 +1,6 @@
+.*
+!.npmignore
+!.gitignore
+!.babelrc
+node_modules
+lib/
