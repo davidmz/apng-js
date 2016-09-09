@@ -1,4 +1,4 @@
-import {parseAPNG, Renderer, Player} from '../library/index';
+import parseAPNG from '../library/parser';
 import './style.css';
 
 const fileInput = document.createElement('input');

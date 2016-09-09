@@ -1,5 +1,11 @@
 import Player from './player';
 
+/**
+ * @property {number} currFrameNumber
+ * @property {Frame} currFrame
+ * @property {boolean} paused
+ * @property {boolean} ended
+ */
 export class APNG {
     /** @type {number} */
     width = 0;

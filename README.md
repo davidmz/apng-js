@@ -3,31 +3,42 @@
 `apng-js` provides functions for parse and render animated PNG's 
 ([APNG](https://en.wikipedia.org/wiki/APNG)).
  
-## Demo
+## Demo page
 
 [https://davidmz.github.io/apng-js/](https://davidmz.github.io/apng-js/)
  
 ## Usage
 `npm install apng-js`
  
-## Exported functions
+## API
 
-### parseAPNG({ArrayBuffer}): {APNG|Error}
+### parseAPNG(buf: ArrayBuffer): (APNG|Error)
 
-Parses APNG data, returns APNG object (see later) or Error.
+**Default exported function**. Parses APNG data, returns APNG object (see below) or Error.
 This function can be used in node.js environment.
 Object methods relies on browser features (canvas, requestAnimationFrame…)
 and should work only in browser.
 
-### isNotPNG({Error}): boolean
+Usage:
+```
+import parseAPNG from 'apng-js';
+
+const apng = parseAPNG(buffer);
+if (apng instanceof Error) {
+    // handle error
+}
+// work with apng object
+```
+
+### isNotPNG(err: Error): boolean
 
 Checks if Error is 'Not a PNG' error.
 
-### isNotAPNG({Error}): boolean
+### isNotAPNG(err: Error): boolean
 
 Checks if Error is 'Not an animated PNG' error.
 
-## Exported classes
+## Classes
 
 ### APNG
 Structure of APNG file.
@@ -48,7 +59,7 @@ class APNG {
 ````
 
 ### Frame
-Properties of individual APNG frame.
+Individual APNG frame.
 ````
 class Frame {
     left: number      // left offset of frame, pixels

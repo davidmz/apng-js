@@ -1,5 +1,5 @@
 import crc32 from './crc32';
-import {APNG, Frame} from './apng';
+import {APNG, Frame} from './structs';
 
 const errNotPNG = new Error('Not a PNG');
 const errNotAPNG = new Error('Not an animated PNG');
@@ -15,7 +15,7 @@ const PNGSignature = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0
  * @param {ArrayBuffer} buffer
  * @return {APNG|Error}
  */
-export function parseAPNG(buffer) {
+export default function parseAPNG(buffer) {
     const bytes = new Uint8Array(buffer);
 
     if (PNGSignature.some((b, i) => b !== bytes[i])) {

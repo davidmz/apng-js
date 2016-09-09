@@ -46,9 +46,13 @@
 
 	'use strict';
 
-	var _index = __webpack_require__(1);
+	var _parser = __webpack_require__(1);
 
-	__webpack_require__(7);
+	var _parser2 = _interopRequireDefault(_parser);
+
+	__webpack_require__(6);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var fileInput = document.createElement('input');
 	fileInput.type = 'file';
@@ -110,7 +114,7 @@
 
 	    var reader = new FileReader();
 	    reader.onload = function () {
-	        var apng = (0, _index.parseAPNG)(reader.result);
+	        var apng = (0, _parser2.default)(reader.result);
 	        if (apng instanceof Error) {
 	            errDiv.appendChild(document.createTextNode(apng.message));
 	            errorBlock.classList.remove('hidden');
@@ -151,7 +155,7 @@
 	}
 
 	function playAPNG(apng, context) {
-	    var rnd = new _index.Renderer(apng, context);
+	    var rnd = new Renderer(apng, context);
 	    var numPlays = 0;
 	    var nextRenderTime = performance.now() + rnd.currFrame().delay;
 	    var stop = false;
@@ -189,51 +193,17 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _parser = __webpack_require__(2);
-
-	Object.keys(_parser).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _parser[key];
-	    }
-	  });
-	});
-
-	var _apng = __webpack_require__(4);
-
-	Object.keys(_apng).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _apng[key];
-	    }
-	  });
-	});
-
-/***/ },
-/* 2 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 	exports.isNotPNG = isNotPNG;
 	exports.isNotAPNG = isNotAPNG;
-	exports.parseAPNG = parseAPNG;
+	exports.default = parseAPNG;
 
-	var _crc = __webpack_require__(3);
+	var _crc = __webpack_require__(2);
 
 	var _crc2 = _interopRequireDefault(_crc);
 
-	var _apng = __webpack_require__(4);
+	var _structs = __webpack_require__(3);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -278,7 +248,7 @@
 	    var headerDataBytes = null,
 	        frame = null,
 	        frameNumber = 0,
-	        apng = new _apng.APNG();
+	        apng = new _structs.APNG();
 
 	    eachChunk(bytes, function (type, bytes, off, length) {
 	        var dv = new DataView(bytes.buffer);
@@ -296,7 +266,7 @@
 	                    apng.frames.push(frame);
 	                    frameNumber++;
 	                }
-	                frame = new _apng.Frame();
+	                frame = new _structs.Frame();
 	                frame.width = dv.getUint32(off + 8 + 4);
 	                frame.height = dv.getUint32(off + 8 + 8);
 	                frame.left = dv.getUint32(off + 8 + 12);
@@ -447,7 +417,7 @@
 	};
 
 /***/ },
-/* 3 */
+/* 2 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -487,7 +457,7 @@
 	;
 
 /***/ },
-/* 4 */
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -499,7 +469,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _player = __webpack_require__(5);
+	var _player = __webpack_require__(4);
 
 	var _player2 = _interopRequireDefault(_player);
 
@@ -507,6 +477,12 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+	/**
+	 * @property {number} currFrameNumber
+	 * @property {Frame} currFrame
+	 * @property {boolean} paused
+	 * @property {boolean} ended
+	 */
 	var APNG = exports.APNG = function () {
 	    function APNG() {
 	        _classCallCheck(this, APNG);
@@ -627,7 +603,7 @@
 	}();
 
 /***/ },
-/* 5 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -638,7 +614,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _events = __webpack_require__(6);
+	var _events = __webpack_require__(5);
 
 	var _events2 = _interopRequireDefault(_events);
 
@@ -823,7 +799,7 @@
 	exports.default = _class;
 
 /***/ },
-/* 6 */
+/* 5 */
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -1131,16 +1107,16 @@
 
 
 /***/ },
-/* 7 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(8);
+	var content = __webpack_require__(7);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(10)(content, {});
+	var update = __webpack_require__(9)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -1157,10 +1133,10 @@
 	}
 
 /***/ },
-/* 8 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(9)();
+	exports = module.exports = __webpack_require__(8)();
 	// imports
 
 
@@ -1171,7 +1147,7 @@
 
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports) {
 
 	/*
@@ -1227,7 +1203,7 @@
 
 
 /***/ },
-/* 10 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*

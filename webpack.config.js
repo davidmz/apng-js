@@ -3,7 +3,7 @@ var webpack = require("webpack");
 
 module.exports = [
     {
-        entry: path.join(__dirname, "src", "library", "index.js"),
+        entry: path.join(__dirname, "src", "library", "parser.js"),
         output: {
             path: path.join(__dirname, "lib"),
             filename: "index.js",
