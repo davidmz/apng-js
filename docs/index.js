@@ -42,7 +42,7 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -59,136 +59,136 @@
 	fileInput.accept = 'image/png';
 
 	document.getElementById('choose-btn').addEventListener('click', function () {
-	    return fileInput.click();
+	  return fileInput.click();
 	});
 
 	fileInput.addEventListener('change', function () {
-	    if (fileInput.files.length > 0) {
-	        processFile(fileInput.files[0]);
-	    }
-	    fileInput.value = '';
+	  if (fileInput.files.length > 0) {
+	    processFile(fileInput.files[0]);
+	  }
+	  fileInput.value = '';
 	});
 
 	var player = null;
 
 	document.getElementById('play-pause-btn').addEventListener('click', function () {
-	    if (player) {
-	        if (player.paused) {
-	            player.play();
-	        } else {
-	            player.pause();
-	        }
+	  if (player) {
+	    if (player.paused) {
+	      player.play();
+	    } else {
+	      player.pause();
 	    }
+	  }
 	});
 
 	document.getElementById('stop-btn').addEventListener('click', function () {
-	    return player && player.stop();
+	  return player && player.stop();
 	});
 
 	var playbackRate = 1.0;
 	document.getElementById('playback-rate').addEventListener('change', function (e) {
-	    playbackRate = parseFloat(e.target.value);
-	    document.getElementById('playback-rate-display').innerHTML = playbackRate.toString();
-	    if (player) {
-	        player.playbackRate = playbackRate;
-	    }
+	  playbackRate = parseFloat(e.target.value);
+	  document.getElementById('playback-rate-display').innerHTML = playbackRate.toString();
+	  if (player) {
+	    player.playbackRate = playbackRate;
+	  }
 	});
 
 	function processFile(file) {
-	    var resultBlock = document.querySelector('.apng-result');
-	    var errorBlock = document.querySelector('.apng-error');
-	    var errDiv = errorBlock.querySelector('.alert');
-	    var infoDiv = document.querySelector('.apng-info');
-	    var framesDiv = document.querySelector('.apng-frames');
-	    var canvasDiv = document.querySelector('.apng-ani');
+	  var resultBlock = document.querySelector('.apng-result');
+	  var errorBlock = document.querySelector('.apng-error');
+	  var errDiv = errorBlock.querySelector('.alert');
+	  var infoDiv = document.querySelector('.apng-info');
+	  var framesDiv = document.querySelector('.apng-frames');
+	  var canvasDiv = document.querySelector('.apng-ani');
 
-	    resultBlock.classList.add('hidden');
-	    errorBlock.classList.add('hidden');
-	    emptyEl(infoDiv);
-	    emptyEl(framesDiv);
-	    emptyEl(canvasDiv);
-	    emptyEl(errDiv);
-	    if (player) {
-	        player.stop();
+	  resultBlock.classList.add('hidden');
+	  errorBlock.classList.add('hidden');
+	  emptyEl(infoDiv);
+	  emptyEl(framesDiv);
+	  emptyEl(canvasDiv);
+	  emptyEl(errDiv);
+	  if (player) {
+	    player.stop();
+	  }
+
+	  var reader = new FileReader();
+	  reader.onload = function () {
+	    var apng = (0, _parser2.default)(reader.result);
+	    if (apng instanceof Error) {
+	      errDiv.appendChild(document.createTextNode(apng.message));
+	      errorBlock.classList.remove('hidden');
+	      return;
 	    }
+	    apng.createImages().then(function () {
+	      infoDiv.appendChild(document.createTextNode(JSON.stringify(apng, null, '  ')));
+	      apng.frames.forEach(function (f) {
+	        var div = framesDiv.appendChild(document.createElement('div'));
+	        div.appendChild(f.imageElement);
+	        div.style.width = apng.width + 'px';
+	        div.style.height = apng.height + 'px';
+	        f.imageElement.style.left = f.left + 'px';
+	        f.imageElement.style.top = f.top + 'px';
+	      });
 
-	    var reader = new FileReader();
-	    reader.onload = function () {
-	        var apng = (0, _parser2.default)(reader.result);
-	        if (apng instanceof Error) {
-	            errDiv.appendChild(document.createTextNode(apng.message));
-	            errorBlock.classList.remove('hidden');
-	            return;
-	        }
-	        apng.createImages().then(function () {
-	            infoDiv.appendChild(document.createTextNode(JSON.stringify(apng, null, '  ')));
-	            apng.frames.forEach(function (f) {
-	                var div = framesDiv.appendChild(document.createElement('div'));
-	                div.appendChild(f.imageElement);
-	                div.style.width = apng.width + 'px';
-	                div.style.height = apng.height + 'px';
-	                f.imageElement.style.left = f.left + 'px';
-	                f.imageElement.style.top = f.top + 'px';
-	            });
+	      var canvas = document.createElement('canvas');
+	      canvas.width = apng.width;
+	      canvas.height = apng.height;
+	      canvasDiv.appendChild(canvas);
 
-	            var canvas = document.createElement('canvas');
-	            canvas.width = apng.width;
-	            canvas.height = apng.height;
-	            canvasDiv.appendChild(canvas);
-
-	            apng.getPlayer(canvas.getContext('2d')).then(function (p) {
-	                player = p;
-	                player.playbackRate = playbackRate;
-	                player.play();
-	            });
-	        });
-	        resultBlock.classList.remove('hidden');
-	    };
-	    reader.readAsArrayBuffer(file);
+	      apng.getPlayer(canvas.getContext('2d')).then(function (p) {
+	        player = p;
+	        player.playbackRate = playbackRate;
+	        player.play();
+	      });
+	    });
+	    resultBlock.classList.remove('hidden');
+	  };
+	  reader.readAsArrayBuffer(file);
 	}
 
 	function emptyEl(el) {
-	    var c = void 0;
-	    while ((c = el.firstChild) !== null) {
-	        el.removeChild(c);
-	    }
+	  var c = void 0;
+	  while ((c = el.firstChild) !== null) {
+	    el.removeChild(c);
+	  }
 	}
 
 	function playAPNG(apng, context) {
-	    var rnd = new Renderer(apng, context);
-	    var numPlays = 0;
-	    var nextRenderTime = performance.now() + rnd.currFrame().delay;
-	    var stop = false;
-	    var tick = function tick(now) {
-	        if (stop) {
+	  var rnd = new Renderer(apng, context);
+	  var numPlays = 0;
+	  var nextRenderTime = performance.now() + rnd.currFrame().delay;
+	  var stop = false;
+	  var tick = function tick(now) {
+	    if (stop) {
+	      return;
+	    }
+	    if (now >= nextRenderTime) {
+	      while (now - nextRenderTime > apng.playTime) {
+	        nextRenderTime += apng.playTime;
+	      }
+	      do {
+	        rnd.renderNext();
+	        if (rnd.frameNumber === apng.frames.length - 1) {
+	          numPlays++;
+	          if (apng.numPlays !== 0 && numPlays >= apng.numPlays) {
 	            return;
+	          }
 	        }
-	        if (now >= nextRenderTime) {
-	            while (now - nextRenderTime > apng.playTime) {
-	                nextRenderTime += apng.playTime;
-	            }
-	            do {
-	                rnd.renderNext();
-	                if (rnd.frameNumber === apng.frames.length - 1) {
-	                    numPlays++;
-	                    if (apng.numPlays !== 0 && numPlays >= apng.numPlays) {
-	                        return;
-	                    }
-	                }
-	                nextRenderTime += rnd.currFrame().delay;
-	            } while (now > nextRenderTime);
-	        }
-	        requestAnimationFrame(tick);
-	    };
+	        nextRenderTime += rnd.currFrame().delay;
+	      } while (now > nextRenderTime);
+	    }
 	    requestAnimationFrame(tick);
-	    return function () {
-	        return stop = true;
-	    };
+	  };
+	  requestAnimationFrame(tick);
+	  return function () {
+	    return stop = true;
+	  };
 	}
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -416,35 +416,35 @@
 	    return new Uint8Array([x >>> 24 & 0xff, x >>> 16 & 0xff, x >>> 8 & 0xff, x & 0xff]);
 	};
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	exports.default = function (bytes) {
-	    var start = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
-	    var length = arguments.length <= 2 || arguments[2] === undefined ? bytes.length - start : arguments[2];
+	  var start = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+	  var length = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : bytes.length - start;
 
-	    var crc = -1;
-	    for (var _i = start, l = start + length; _i < l; _i++) {
-	        crc = crc >>> 8 ^ table[(crc ^ bytes[_i]) & 0xFF];
-	    }
-	    return crc ^ -1;
+	  var crc = -1;
+	  for (var _i = start, l = start + length; _i < l; _i++) {
+	    crc = crc >>> 8 ^ table[(crc ^ bytes[_i]) & 0xFF];
+	  }
+	  return crc ^ -1;
 	};
 
 	var table = new Uint32Array(256);
 
 	for (var i = 0; i < 256; i++) {
-	    var c = i;
-	    for (var k = 0; k < 8; k++) {
-	        c = (c & 1) !== 0 ? 0xEDB88320 ^ c >>> 1 : c >>> 1;
-	    }
-	    table[i] = c;
+	  var c = i;
+	  for (var k = 0; k < 8; k++) {
+	    c = (c & 1) !== 0 ? 0xEDB88320 ^ c >>> 1 : c >>> 1;
+	  }
+	  table[i] = c;
 	}
 
 	/**
@@ -456,9 +456,9 @@
 	 */
 	;
 
-/***/ },
+/***/ }),
 /* 3 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -530,7 +530,7 @@
 	        value: function getPlayer(context) {
 	            var _this = this;
 
-	            var autoPlay = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+	            var autoPlay = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
 	            return this.createImages().then(function () {
 	                return new _player2.default(_this, context, autoPlay);
@@ -602,9 +602,9 @@
 	    return Frame;
 	}();
 
-/***/ },
+/***/ }),
 /* 4 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -798,9 +798,9 @@
 
 	exports.default = _class;
 
-/***/ },
+/***/ }),
 /* 5 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
 	//
@@ -1106,9 +1106,9 @@
 	}
 
 
-/***/ },
+/***/ }),
 /* 6 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
@@ -1122,8 +1122,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./style.css", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./style.css");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!./style.css", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!./style.css");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -1132,9 +1132,9 @@
 		module.hot.dispose(function() { update(); });
 	}
 
-/***/ },
+/***/ }),
 /* 7 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(8)();
 	// imports
@@ -1146,9 +1146,9 @@
 	// exports
 
 
-/***/ },
+/***/ }),
 /* 8 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 		MIT License http://www.opensource.org/licenses/mit-license.php
@@ -1202,9 +1202,9 @@
 	};
 
 
-/***/ },
+/***/ }),
 /* 9 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 		MIT License http://www.opensource.org/licenses/mit-license.php
@@ -1219,7 +1219,7 @@
 			};
 		},
 		isOldIE = memoize(function() {
-			return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
+			return /msie [6-9]\b/.test(self.navigator.userAgent.toLowerCase());
 		}),
 		getHeadElement = memoize(function () {
 			return document.head || document.getElementsByTagName("head")[0];
@@ -1454,5 +1454,5 @@
 	}
 
 
-/***/ }
+/***/ })
 /******/ ]);
