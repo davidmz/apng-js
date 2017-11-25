@@ -228,7 +228,7 @@
 	function parseAPNG(buffer) {
 	    var bytes = new Uint8Array(buffer);
 
-	    if (PNGSignature.some(function (b, i) {
+	    if (Array.prototype.some.call(PNGSignature, function (b, i) {
 	        return b !== bytes[i];
 	    })) {
 	        return errNotPNG;
