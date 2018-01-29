@@ -17,7 +17,7 @@ This library is written using ES2015 Javascript. If you are already using [babel
 
 then, import `parseAPNG` into your app...
 
-```
+```JavaScript
 import parseAPNG from 'apng-js'
 
 const apng = parseAPNG( require('./images/elephant.png') );
@@ -30,12 +30,11 @@ const apng = parseAPNG( require('./images/elephant.png') );
 
 Using a module loader like [requirejs](http://requirejs.org/):
 
-- Install the library:
--- `npm install apng-js`
+- Install the library: `npm install apng-js`
 
 Then, import the compiled library (located @ `lib/index.js` using requirejs:
 
-```
+```JavaScript
 <script src="path/to/require.min.js"></script>
 <script>
 
@@ -68,7 +67,7 @@ Object methods relies on browser features (canvas, requestAnimationFrame…)
 and should work only in browser.
 
 Usage:
-```
+```JavaScript
 import parseAPNG from 'apng-js';
 
 const apng = parseAPNG(buffer);
@@ -90,7 +89,7 @@ Checks if Error is 'Not an animated PNG' error.
 
 ### APNG
 Structure of APNG file.
-````
+```JavaScript
 class APNG {
     width: number     // with of canvas, pixels
     height: number    // height of canvas, pixels
@@ -108,7 +107,7 @@ class APNG {
 
 ### Frame
 Individual APNG frame.
-````
+```JavaScript
 class Frame {
     left: number      // left offset of frame, pixels
     top: number       // top offset of frame, pixels
@@ -127,10 +126,10 @@ class Frame {
     // Methods
     createImage(): Promise // create imageElement for this frame
 }
-````
+```
 ### Player
 Player renders APNG frames on given rendering context and plays APNG animation.
-````
+```JavaScript
 class Player {
     context: CanvasRenderingContext2D
     playbackRate: number = 1.0 // animation playback rate
@@ -148,7 +147,7 @@ class Player {
     renderNextFrame()       // move to next frame and render it on context
                             // Use this method to manual, frame by frame, rendering.
 }
-````
+```
 
 Player object is an [EventEmitter](https://nodejs.org/api/events.html). You can listen to following events:
 
