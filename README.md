@@ -8,8 +8,56 @@
 [https://davidmz.github.io/apng-js/](https://davidmz.github.io/apng-js/)
  
 ## Usage
+
+### Using Babel/Webpack
+
+This library is written using ES2015 Javascript. If you are already using [babel](https://babeljs.io), you can easily integrate this library with the following steps.
+
 `npm install apng-js`
- 
+
+then, import `parseAPNG` into your app...
+
+```
+import parseAPNG from 'apng-js'
+
+const apng = parseAPNG( require('./images/elephant.png') );
+
+```
+
+
+
+### Using plain old Javascript
+
+Using a module loader like [requirejs](http://requirejs.org/):
+
+- Install the library:
+-- `npm install apng-js`
+
+Then, import the compiled library (located @ `lib/index.js` using requirejs:
+
+```
+<script src="path/to/require.min.js"></script>
+<script>
+
+/// require the compiled js library from its location in the node_modules folder:
+require(['./node_modules/apng-js/lib/index'], function(parseAPNGLib) {
+    
+    var parseAPNG = parseAPNGLib.default
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function(){
+        if (this.readyState == 4 && this.status == 200){
+             parseAPNG(this.response);      // parse the response
+        }
+    }
+    xhr.open('GET', '.images/elephant.png', true);   // load an .apng via ajax
+    xhr.responseType =  "arraybuffer";      // use arraybuffer response
+    xhr.send(); 
+
+
+});
+</script>
+```
+
 ## API
 
 ### parseAPNG(buf: ArrayBuffer): (APNG|Error)
