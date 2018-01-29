@@ -45,7 +45,7 @@ require(['./node_modules/apng-js/lib/index'], function(parseAPNGLib) {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function(){
         if (this.readyState == 4 && this.status == 200){
-             parseAPNG(this.response);      // parse the response
+             var apng = parseAPNG(this.response);      // parse the response
         }
     }
     xhr.open('GET', '.images/elephant.png', true);   // load an .apng via ajax
