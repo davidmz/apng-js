@@ -21,7 +21,7 @@
     "babel-loader": "^6.4.1",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-1": "^6.24.1",
-    "css-loader": "^0.25.0",
+    "css-loader": "^0.28.9",
     "eslint": "^4.11.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.8.0",
@@ -31,5 +31,9 @@
     "style-loader": "^0.13.2",
     "webpack": "^1.15.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "apng-js": "^1.0.4",
+    "requirejs": "^2.3.5",
+    "whatwg-fetch": "^2.0.3"
+  }
 }
