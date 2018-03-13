@@ -58,6 +58,7 @@ function processFile (file) {
   const reader = new FileReader()
   reader.onload = () => {
     const apng = parseAPNG(reader.result)
+    console.log(reader.result)
     if (apng instanceof Error) {
       errDiv.appendChild(document.createTextNode(apng.message))
       errorBlock.classList.remove('hidden')

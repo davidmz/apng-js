@@ -54,6 +54,7 @@ export default class extends EventEmitter {
     }
 
     renderNextFrame() {
+        this.emit('renderNextFrame');
         this._currentFrameNumber = (this._currentFrameNumber + 1) % this._apng.frames.length;
         if (this._currentFrameNumber === this._apng.frames.length - 1) {
             this._numPlays++;
