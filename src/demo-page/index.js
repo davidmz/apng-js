@@ -44,6 +44,7 @@ function processFile (file) {
   const infoDiv = document.querySelector('.apng-info')
   const framesDiv = document.querySelector('.apng-frames')
   const canvasDiv = document.querySelector('.apng-ani')
+  const logDiv = document.querySelector('.apng-log')
 
   resultBlock.classList.add('hidden')
   errorBlock.classList.add('hidden')
@@ -51,9 +52,12 @@ function processFile (file) {
   emptyEl(framesDiv)
   emptyEl(canvasDiv)
   emptyEl(errDiv)
+  emptyEl(logDiv)
   if (player) {
     player.stop()
   }
+
+  const log = [];
 
   const reader = new FileReader()
   reader.onload = () => {
@@ -82,6 +86,16 @@ function processFile (file) {
       apng.getPlayer(canvas.getContext('2d')).then(p => {
         player = p
         player.playbackRate = playbackRate
+        const em = player.emit;
+        player.emit = (event, ...args) => {
+          log.unshift({event, args});
+          if (log.length > 10) {
+            log.splice(10, log.length - 10);
+          }
+          logDiv.textContent = log.map(({event, args}) => `${event}: ${JSON.stringify(args)}`).join("\n");
+
+          em.call(player, event, ...args);
+        }
         player.play()
       })
     })
@@ -95,34 +109,4 @@ function emptyEl (el) {
   while ((c = el.firstChild) !== null) {
     el.removeChild(c)
   }
-}
-
-function playAPNG (apng, context) {
-  const rnd = new Renderer(apng, context)
-  let numPlays = 0
-  let nextRenderTime = performance.now() + rnd.currFrame().delay
-  let stop = false
-  const tick = now => {
-    if (stop) {
-      return
-    }
-    if (now >= nextRenderTime) {
-      while (now - nextRenderTime > apng.playTime) {
-        nextRenderTime += apng.playTime
-      }
-      do {
-        rnd.renderNext()
-        if (rnd.frameNumber === apng.frames.length - 1) {
-          numPlays++
-          if (apng.numPlays !== 0 && numPlays >= apng.numPlays) {
-            return
-          }
-        }
-        nextRenderTime += rnd.currFrame().delay
-      } while (now > nextRenderTime)
-    }
-    requestAnimationFrame(tick)
-  }
-  requestAnimationFrame(tick)
-  return () => stop = true
 }

@@ -105,6 +105,7 @@ class Player {
 Player object is an [EventEmitter](https://nodejs.org/api/events.html). You can listen to following events:
 
   * **play** — playback started;
+  * **frame** — frame played (frame number passed as event parameter);
   * **pause** — playback paused;
   * **stop** — playback stopped;
   * **end** — playback ended (for APNG with finite count of plays).

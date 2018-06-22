@@ -58,7 +58,6 @@ export default class extends EventEmitter {
         if (this._currentFrameNumber === this._apng.frames.length - 1) {
             this._numPlays++;
             if (this._apng.numPlays !== 0 && this._numPlays >= this._apng.numPlays) {
-                this.emit('end');
                 this._ended = true;
                 this._paused = true;
             }
@@ -81,6 +80,11 @@ export default class extends EventEmitter {
         }
 
         this.context.drawImage(frame.imageElement, frame.left, frame.top);
+
+        this.emit('frame', this._currentFrameNumber);
+        if (this._ended) {
+            this.emit('end');
+        }
     }
 
     // playback

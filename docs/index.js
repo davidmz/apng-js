@@ -101,6 +101,7 @@
 	  var infoDiv = document.querySelector('.apng-info');
 	  var framesDiv = document.querySelector('.apng-frames');
 	  var canvasDiv = document.querySelector('.apng-ani');
+	  var logDiv = document.querySelector('.apng-log');
 
 	  resultBlock.classList.add('hidden');
 	  errorBlock.classList.add('hidden');
@@ -108,9 +109,12 @@
 	  emptyEl(framesDiv);
 	  emptyEl(canvasDiv);
 	  emptyEl(errDiv);
+	  emptyEl(logDiv);
 	  if (player) {
 	    player.stop();
 	  }
+
+	  var log = [];
 
 	  var reader = new FileReader();
 	  reader.onload = function () {
@@ -139,6 +143,24 @@
 	      apng.getPlayer(canvas.getContext('2d')).then(function (p) {
 	        player = p;
 	        player.playbackRate = playbackRate;
+	        var em = player.emit;
+	        player.emit = function (event) {
+	          for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	            args[_key - 1] = arguments[_key];
+	          }
+
+	          log.unshift({ event: event, args: args });
+	          if (log.length > 10) {
+	            log.splice(10, log.length - 10);
+	          }
+	          logDiv.textContent = log.map(function (_ref) {
+	            var event = _ref.event,
+	                args = _ref.args;
+	            return event + ': ' + JSON.stringify(args);
+	          }).join("\n");
+
+	          em.call.apply(em, [player, event].concat(args));
+	        };
 	        player.play();
 	      });
 	    });
@@ -152,38 +174,6 @@
 	  while ((c = el.firstChild) !== null) {
 	    el.removeChild(c);
 	  }
-	}
-
-	function playAPNG(apng, context) {
-	  var rnd = new Renderer(apng, context);
-	  var numPlays = 0;
-	  var nextRenderTime = performance.now() + rnd.currFrame().delay;
-	  var stop = false;
-	  var tick = function tick(now) {
-	    if (stop) {
-	      return;
-	    }
-	    if (now >= nextRenderTime) {
-	      while (now - nextRenderTime > apng.playTime) {
-	        nextRenderTime += apng.playTime;
-	      }
-	      do {
-	        rnd.renderNext();
-	        if (rnd.frameNumber === apng.frames.length - 1) {
-	          numPlays++;
-	          if (apng.numPlays !== 0 && numPlays >= apng.numPlays) {
-	            return;
-	          }
-	        }
-	        nextRenderTime += rnd.currFrame().delay;
-	      } while (now > nextRenderTime);
-	    }
-	    requestAnimationFrame(tick);
-	  };
-	  requestAnimationFrame(tick);
-	  return function () {
-	    return stop = true;
-	  };
 	}
 
 /***/ }),
@@ -687,7 +677,6 @@
 	            if (this._currentFrameNumber === this._apng.frames.length - 1) {
 	                this._numPlays++;
 	                if (this._apng.numPlays !== 0 && this._numPlays >= this._apng.numPlays) {
-	                    this.emit('end');
 	                    this._ended = true;
 	                    this._paused = true;
 	                }
@@ -710,6 +699,11 @@
 	            }
 
 	            this.context.drawImage(frame.imageElement, frame.left, frame.top);
+
+	            this.emit('frame', this._currentFrameNumber);
+	            if (this._ended) {
+	                this.emit('end');
+	            }
 	        }
 
 	        // playback
@@ -1141,7 +1135,7 @@
 
 
 	// module
-	exports.push([module.id, ".apng-info,\r\n.apng-frames {\r\n    max-height: 600px;\r\n    overflow:   auto;\r\n}\r\n\r\n.apng-frames > div {\r\n    float:            left;\r\n    margin:           1px 1px 8px 8px;\r\n    box-shadow:       0 0 0 1px;\r\n    position:         relative;\r\n    background:       linear-gradient(45deg, #fff 25%, transparent 26%, transparent 75%, #fff 76%),\r\n                      linear-gradient(-45deg, #fff 25%, transparent 26%, transparent 75%, #fff 76%);\r\n    background-color: #eee;\r\n    background-size:  20px 20px;\r\n}\r\n\r\n.apng-frames > div > img {\r\n    position:   absolute;\r\n    box-shadow: 0 0 0 1px rgba(255, 0, 0, 0.75);\r\n}\r\n\r\n#playback-rate {\r\n    width:   12em;\r\n    display: inline-block;\r\n}", ""]);
+	exports.push([module.id, ".apng-info,\r\n.apng-frames {\r\n    max-height: 600px;\r\n    overflow:   auto;\r\n}\r\n\r\n.apng-frames > div {\r\n    float:            left;\r\n    margin:           1px 1px 8px 8px;\r\n    box-shadow:       0 0 0 1px;\r\n    position:         relative;\r\n    background:       linear-gradient(45deg, #fff 25%, transparent 26%, transparent 75%, #fff 76%),\r\n                      linear-gradient(-45deg, #fff 25%, transparent 26%, transparent 75%, #fff 76%);\r\n    background-color: #eee;\r\n    background-size:  20px 20px;\r\n}\r\n\r\n.apng-frames > div > img {\r\n    position:   absolute;\r\n    box-shadow: 0 0 0 1px rgba(255, 0, 0, 0.75);\r\n}\r\n\r\n#playback-rate {\r\n    width:   12em;\r\n    display: inline-block;\r\n}\r\n\r\n.apng-log {\r\n    height: 10em;\r\n}", ""]);
 
 	// exports
 
