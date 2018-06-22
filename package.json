@@ -1,13 +1,13 @@
 {
   "name": "apng-js",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Parse and play animated PNG (APNG)",
   "homepage": "https://github.com/davidmz/apng-js",
   "repository": "davidmz/apng-js",
   "main": "lib/index.js",
   "scripts": {
-    "build": "node_modules/.bin/webpack",
-    "prepublish": "npm run build"
+    "build": "webpack",
+    "prepublish": "build"
   },
   "author": {
     "name": "David Mzareulyan",
@@ -19,7 +19,7 @@
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.2",
     "babel-loader": "^6.4.1",
-    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
     "babel-preset-stage-1": "^6.24.1",
     "css-loader": "^0.25.0",
     "eslint": "^4.11.0",
