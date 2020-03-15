@@ -1,44 +1,33 @@
-var path = require('path')
+// @ts-check
+const path = require('path');
 
-module.exports = [
-  {
-    entry: path.join(__dirname, 'src', 'library', 'parser.js'),
-    output: {
-      path: path.join(__dirname, 'lib'),
-      filename: 'index.js',
-      library: 'apng-js',
-      libraryTarget: 'umd'
-    },
-    module: {
-      loaders: [
-        {
-          test: /\.js$/,
-          loader: 'babel-loader',
-          exclude: /[\\\/](node_modules|lib)[\\\/]/
-        }
-      ]
-    }
+/**
+ * @type {import('webpack').Configuration}}
+ */
+const webpackConfigs = {
+  mode: 'development',
+  entry: path.join(__dirname, 'src', 'demo-page', 'index.js'),
+  output: {
+    path: path.join(__dirname, 'docs'),
+    filename: 'index.js',
   },
-  {
-    entry: path.join(__dirname, 'src', 'demo-page', 'index.js'),
-    output: {
-      path: path.join(__dirname, 'docs'),
-      filename: 'index.js'
-    },
-    module: {
-      loaders: [
-        {
-          test: /\.js$/,
-          loader: 'babel-loader',
-          exclude: /[\\\/](node_modules|lib)[\\\/]/
-        },
-        {
-          test: /\.css$/,
-          exclude: /[\\\/](node_modules|lib)[\\\/]/,
-          loader: 'style-loader!css-loader'
-        }
-      ]
-    }/*,
+  resolve: {
+    extensions: ['.tsx', '.jsx', '.ts', '.js'],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(t|j)sx?$/,
+        use: 'babel-loader',
+        exclude: /[\\\/](node_modules|lib)[\\\/]/,
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+        exclude: /[\\\/](node_modules|lib)[\\\/]/,
+      },
+    ],
+  } /*,
      plugins: [
      new webpack.optimize.UglifyJsPlugin({
      compress: {
@@ -47,6 +36,7 @@ module.exports = [
      },
      comments: false
      })
-     ] */
-  }
-]
+     ] */,
+};
+
+module.exports = webpackConfigs;

@@ -3,33 +3,55 @@
   "version": "1.1.0",
   "description": "Parse and play animated PNG (APNG)",
   "homepage": "https://github.com/davidmz/apng-js",
-  "repository": "davidmz/apng-js",
-  "main": "lib/index.js",
-  "scripts": {
-    "build": "webpack",
-    "prepublish": "yarn build"
-  },
   "author": {
     "name": "David Mzareulyan",
     "email": "david@hiero.ru",
     "url": "https://github.com/davidmz"
   },
   "license": "MIT",
-  "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-eslint": "^8.2.6",
-    "babel-loader": "^6.4.1",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-preset-env": "^1.7.0",
-    "css-loader": "^1.0.1",
-    "eslint": "^5.16.0",
-    "eslint-config-standard": "^12.0.0",
-    "eslint-plugin-import": "^2.17.3",
-    "eslint-plugin-node": "^9.1.0",
-    "eslint-plugin-promise": "^4.1.1",
-    "eslint-plugin-standard": "^4.0.0",
-    "style-loader": "^0.13.2",
-    "webpack": "^1.15.0"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davidmz/apng-js.git"
   },
-  "dependencies": {}
+  "main": "./lib/index.umd.js",
+  "exports": {
+    ".": {
+      "require": "./lib/index.cjs",
+      "import": "./lib/index.mjs"
+    }
+  },
+  "scripts": {
+    "lint": "eslint src",
+    "build": "rollup --config ./rollup.config.mjs && webpack",
+    "prepublish": "yarn build"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.8.7",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/preset-env": "^7.8.7",
+    "@babel/preset-typescript": "^7.8.3",
+    "@rollup/plugin-commonjs": "^11.0.2",
+    "@types/node": "^13.9.1",
+    "@types/webpack": "^4.41.7",
+    "@typescript-eslint/eslint-plugin": "^2.23.0",
+    "@typescript-eslint/parser": "^2.23.0",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.0.6",
+    "builtin-modules": "^3.1.0",
+    "css-loader": "^3.4.2",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-import": "^2.20.1",
+    "fork-ts-checker-webpack-plugin": "^4.1.0",
+    "prettier": "^1.19.1",
+    "rollup": "^2.0.6",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "style-loader": "^1.1.3",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11"
+  }
 }

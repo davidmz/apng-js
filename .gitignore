@@ -1,7 +1,10 @@
 .*
 !.npmignore
 !.gitignore
-!.babelrc
+!.babelrc.json
+!.editorconfig
+!.prettierrc.json
+!.prettierignore
 !.eslintrc.json
 node_modules
 lib/

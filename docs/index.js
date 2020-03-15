@@ -1,1452 +1,207 @@
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-
+/******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
-/******/ 			exports: {},
-/******/ 			id: moduleId,
-/******/ 			loaded: false
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
 /******/ 		};
-
+/******/
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
+/******/
 /******/ 		// Flag the module as loaded
-/******/ 		module.loaded = true;
-
+/******/ 		module.l = true;
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-
-
+/******/
+/******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-
+/******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-
+/******/
+/******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(0);
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/demo-page/index.js");
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
+/******/ ({
+
+/***/ "./node_modules/css-loader/dist/cjs.js!./src/demo-page/style.css":
+/*!***********************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./src/demo-page/style.css ***!
+  \***********************************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-	'use strict';
-
-	var _parser = __webpack_require__(1);
-
-	var _parser2 = _interopRequireDefault(_parser);
-
-	__webpack_require__(6);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var fileInput = document.createElement('input');
-	fileInput.type = 'file';
-	fileInput.accept = 'image/png';
-
-	document.getElementById('choose-btn').addEventListener('click', function () {
-	  return fileInput.click();
-	});
-
-	fileInput.addEventListener('change', function () {
-	  if (fileInput.files.length > 0) {
-	    processFile(fileInput.files[0]);
-	  }
-	  fileInput.value = '';
-	});
-
-	var player = null;
-
-	document.getElementById('play-pause-btn').addEventListener('click', function () {
-	  if (player) {
-	    if (player.paused) {
-	      player.play();
-	    } else {
-	      player.pause();
-	    }
-	  }
-	});
-
-	document.getElementById('stop-btn').addEventListener('click', function () {
-	  return player && player.stop();
-	});
-
-	var playbackRate = 1.0;
-	document.getElementById('playback-rate').addEventListener('change', function (e) {
-	  playbackRate = parseFloat(e.target.value);
-	  document.getElementById('playback-rate-display').innerHTML = playbackRate.toString();
-	  if (player) {
-	    player.playbackRate = playbackRate;
-	  }
-	});
-
-	function processFile(file) {
-	  var resultBlock = document.querySelector('.apng-result');
-	  var errorBlock = document.querySelector('.apng-error');
-	  var errDiv = errorBlock.querySelector('.alert');
-	  var infoDiv = document.querySelector('.apng-info');
-	  var framesDiv = document.querySelector('.apng-frames');
-	  var canvasDiv = document.querySelector('.apng-ani');
-	  var logDiv = document.querySelector('.apng-log');
-
-	  resultBlock.classList.add('hidden');
-	  errorBlock.classList.add('hidden');
-	  emptyEl(infoDiv);
-	  emptyEl(framesDiv);
-	  emptyEl(canvasDiv);
-	  emptyEl(errDiv);
-	  emptyEl(logDiv);
-	  if (player) {
-	    player.stop();
-	  }
-
-	  var log = [];
-
-	  var reader = new FileReader();
-	  reader.onload = function () {
-	    var apng = (0, _parser2.default)(reader.result);
-	    if (apng instanceof Error) {
-	      errDiv.appendChild(document.createTextNode(apng.message));
-	      errorBlock.classList.remove('hidden');
-	      return;
-	    }
-	    apng.createImages().then(function () {
-	      infoDiv.appendChild(document.createTextNode(JSON.stringify(apng, null, '  ')));
-	      apng.frames.forEach(function (f) {
-	        var div = framesDiv.appendChild(document.createElement('div'));
-	        div.appendChild(f.imageElement);
-	        div.style.width = apng.width + 'px';
-	        div.style.height = apng.height + 'px';
-	        f.imageElement.style.left = f.left + 'px';
-	        f.imageElement.style.top = f.top + 'px';
-	      });
-
-	      var canvas = document.createElement('canvas');
-	      canvas.width = apng.width;
-	      canvas.height = apng.height;
-	      canvasDiv.appendChild(canvas);
-
-	      apng.getPlayer(canvas.getContext('2d')).then(function (p) {
-	        player = p;
-	        player.playbackRate = playbackRate;
-	        var em = player.emit;
-	        player.emit = function (event) {
-	          for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-	            args[_key - 1] = arguments[_key];
-	          }
-
-	          log.unshift({ event: event, args: args });
-	          if (log.length > 10) {
-	            log.splice(10, log.length - 10);
-	          }
-	          logDiv.textContent = log.map(function (_ref) {
-	            var event = _ref.event,
-	                args = _ref.args;
-	            return event + ': ' + JSON.stringify(args);
-	          }).join("\n");
-
-	          em.call.apply(em, [player, event].concat(args));
-	        };
-	        player.play();
-	      });
-	    });
-	    resultBlock.classList.remove('hidden');
-	  };
-	  reader.readAsArrayBuffer(file);
-	}
-
-	function emptyEl(el) {
-	  var c = void 0;
-	  while ((c = el.firstChild) !== null) {
-	    el.removeChild(c);
-	  }
-	}
+eval("// Imports\nvar ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ \"./node_modules/css-loader/dist/runtime/api.js\");\nexports = ___CSS_LOADER_API_IMPORT___(false);\n// Module\nexports.push([module.i, \".apng-info,\\n.apng-frames {\\n  max-height: 600px;\\n  overflow: auto;\\n}\\n\\n.apng-frames > div {\\n  float: left;\\n  margin: 1px 1px 8px 8px;\\n  box-shadow: 0 0 0 1px;\\n  position: relative;\\n  background: linear-gradient(\\n      45deg,\\n      #fff 25%,\\n      transparent 26%,\\n      transparent 75%,\\n      #fff 76%\\n    ),\\n    linear-gradient(\\n      -45deg,\\n      #fff 25%,\\n      transparent 26%,\\n      transparent 75%,\\n      #fff 76%\\n    );\\n  background-color: #eee;\\n  background-size: 20px 20px;\\n}\\n\\n.apng-frames > div > img {\\n  position: absolute;\\n  box-shadow: 0 0 0 1px rgba(255, 0, 0, 0.75);\\n}\\n\\n#playback-rate {\\n  width: 12em;\\n  display: inline-block;\\n}\\n\\n.apng-log {\\n  height: 10em;\\n}\\n\", \"\"]);\n// Exports\nmodule.exports = exports;\n\n\n//# sourceURL=webpack:///./src/demo-page/style.css?./node_modules/css-loader/dist/cjs.js");
 
 /***/ }),
-/* 1 */
+
+/***/ "./node_modules/css-loader/dist/runtime/api.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/css-loader/dist/runtime/api.js ***!
+  \*****************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.isNotPNG = isNotPNG;
-	exports.isNotAPNG = isNotAPNG;
-	exports.default = parseAPNG;
-
-	var _crc = __webpack_require__(2);
-
-	var _crc2 = _interopRequireDefault(_crc);
-
-	var _structs = __webpack_require__(3);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var errNotPNG = new Error('Not a PNG');
-	var errNotAPNG = new Error('Not an animated PNG');
-
-	function isNotPNG(err) {
-	    return err === errNotPNG;
-	}
-	function isNotAPNG(err) {
-	    return err === errNotAPNG;
-	}
-
-	// '\x89PNG\x0d\x0a\x1a\x0a'
-	var PNGSignature = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
-
-	/**
-	 * Parse APNG data
-	 * @param {ArrayBuffer} buffer
-	 * @return {APNG|Error}
-	 */
-	function parseAPNG(buffer) {
-	    var bytes = new Uint8Array(buffer);
-
-	    if (Array.prototype.some.call(PNGSignature, function (b, i) {
-	        return b !== bytes[i];
-	    })) {
-	        return errNotPNG;
-	    }
-
-	    // fast animation test
-	    var isAnimated = false;
-	    eachChunk(bytes, function (type) {
-	        return !(isAnimated = type === 'acTL');
-	    });
-	    if (!isAnimated) {
-	        return errNotAPNG;
-	    }
-
-	    var preDataParts = [],
-	        postDataParts = [];
-	    var headerDataBytes = null,
-	        frame = null,
-	        frameNumber = 0,
-	        apng = new _structs.APNG();
-
-	    eachChunk(bytes, function (type, bytes, off, length) {
-	        var dv = new DataView(bytes.buffer);
-	        switch (type) {
-	            case 'IHDR':
-	                headerDataBytes = bytes.subarray(off + 8, off + 8 + length);
-	                apng.width = dv.getUint32(off + 8);
-	                apng.height = dv.getUint32(off + 12);
-	                break;
-	            case 'acTL':
-	                apng.numPlays = dv.getUint32(off + 8 + 4);
-	                break;
-	            case 'fcTL':
-	                if (frame) {
-	                    apng.frames.push(frame);
-	                    frameNumber++;
-	                }
-	                frame = new _structs.Frame();
-	                frame.width = dv.getUint32(off + 8 + 4);
-	                frame.height = dv.getUint32(off + 8 + 8);
-	                frame.left = dv.getUint32(off + 8 + 12);
-	                frame.top = dv.getUint32(off + 8 + 16);
-	                var delayN = dv.getUint16(off + 8 + 20);
-	                var delayD = dv.getUint16(off + 8 + 22);
-	                if (delayD === 0) {
-	                    delayD = 100;
-	                }
-	                frame.delay = 1000 * delayN / delayD;
-	                // https://bugzilla.mozilla.org/show_bug.cgi?id=125137
-	                // https://bugzilla.mozilla.org/show_bug.cgi?id=139677
-	                // https://bugzilla.mozilla.org/show_bug.cgi?id=207059
-	                if (frame.delay <= 10) {
-	                    frame.delay = 100;
-	                }
-	                apng.playTime += frame.delay;
-	                frame.disposeOp = dv.getUint8(off + 8 + 24);
-	                frame.blendOp = dv.getUint8(off + 8 + 25);
-	                frame.dataParts = [];
-	                if (frameNumber === 0 && frame.disposeOp === 2) {
-	                    frame.disposeOp = 1;
-	                }
-	                break;
-	            case 'fdAT':
-	                if (frame) {
-	                    frame.dataParts.push(bytes.subarray(off + 8 + 4, off + 8 + length));
-	                }
-	                break;
-	            case 'IDAT':
-	                if (frame) {
-	                    frame.dataParts.push(bytes.subarray(off + 8, off + 8 + length));
-	                }
-	                break;
-	            case 'IEND':
-	                postDataParts.push(subBuffer(bytes, off, 12 + length));
-	                break;
-	            default:
-	                preDataParts.push(subBuffer(bytes, off, 12 + length));
-	        }
-	    });
-
-	    if (frame) {
-	        apng.frames.push(frame);
-	    }
-
-	    if (apng.frames.length == 0) {
-	        return errNotAPNG;
-	    }
-
-	    var preBlob = new Blob(preDataParts),
-	        postBlob = new Blob(postDataParts);
-
-	    apng.frames.forEach(function (frame) {
-	        var bb = [];
-	        bb.push(PNGSignature);
-	        headerDataBytes.set(makeDWordArray(frame.width), 0);
-	        headerDataBytes.set(makeDWordArray(frame.height), 4);
-	        bb.push(makeChunkBytes('IHDR', headerDataBytes));
-	        bb.push(preBlob);
-	        frame.dataParts.forEach(function (p) {
-	            return bb.push(makeChunkBytes('IDAT', p));
-	        });
-	        bb.push(postBlob);
-	        frame.imageData = new Blob(bb, { 'type': 'image/png' });
-	        delete frame.dataParts;
-	        bb = null;
-	    });
-
-	    return apng;
-	}
-
-	/**
-	 * @param {Uint8Array} bytes
-	 * @param {function(string, Uint8Array, int, int): boolean} callback
-	 */
-	function eachChunk(bytes, callback) {
-	    var dv = new DataView(bytes.buffer);
-	    var off = 8,
-	        type = void 0,
-	        length = void 0,
-	        res = void 0;
-	    do {
-	        length = dv.getUint32(off);
-	        type = readString(bytes, off + 4, 4);
-	        res = callback(type, bytes, off, length);
-	        off += 12 + length;
-	    } while (res !== false && type != 'IEND' && off < bytes.length);
-	}
-
-	/**
-	 *
-	 * @param {Uint8Array} bytes
-	 * @param {number} off
-	 * @param {number} length
-	 * @return {string}
-	 */
-	function readString(bytes, off, length) {
-	    var chars = Array.prototype.slice.call(bytes.subarray(off, off + length));
-	    return String.fromCharCode.apply(String, chars);
-	}
-
-	/**
-	 *
-	 * @param {string} x
-	 * @return {Uint8Array}
-	 */
-	function makeStringArray(x) {
-	    var res = new Uint8Array(x.length);
-	    for (var i = 0; i < x.length; i++) {
-	        res[i] = x.charCodeAt(i);
-	    }
-	    return res;
-	}
-
-	/**
-	 * @param {Uint8Array} bytes
-	 * @param {int} start
-	 * @param {int} length
-	 * @return {Uint8Array}
-	 */
-	function subBuffer(bytes, start, length) {
-	    var a = new Uint8Array(length);
-	    a.set(bytes.subarray(start, start + length));
-	    return a;
-	}
-
-	/**
-	 * @param {string} type
-	 * @param {Uint8Array} dataBytes
-	 * @return {Uint8Array}
-	 */
-	var makeChunkBytes = function makeChunkBytes(type, dataBytes) {
-	    var crcLen = type.length + dataBytes.length;
-	    var bytes = new Uint8Array(crcLen + 8);
-	    var dv = new DataView(bytes.buffer);
-
-	    dv.setUint32(0, dataBytes.length);
-	    bytes.set(makeStringArray(type), 4);
-	    bytes.set(dataBytes, 8);
-	    var crc = (0, _crc2.default)(bytes, 4, crcLen);
-	    dv.setUint32(crcLen + 4, crc);
-	    return bytes;
-	};
-
-	var makeDWordArray = function makeDWordArray(x) {
-	    return new Uint8Array([x >>> 24 & 0xff, x >>> 16 & 0xff, x >>> 8 & 0xff, x & 0xff]);
-	};
+"use strict";
+eval("\n\n/*\n  MIT License http://www.opensource.org/licenses/mit-license.php\n  Author Tobias Koppers @sokra\n*/\n// css base code, injected by the css-loader\n// eslint-disable-next-line func-names\nmodule.exports = function (useSourceMap) {\n  var list = []; // return the list of modules as css string\n\n  list.toString = function toString() {\n    return this.map(function (item) {\n      var content = cssWithMappingToString(item, useSourceMap);\n\n      if (item[2]) {\n        return \"@media \".concat(item[2], \" {\").concat(content, \"}\");\n      }\n\n      return content;\n    }).join('');\n  }; // import a list of modules into the list\n  // eslint-disable-next-line func-names\n\n\n  list.i = function (modules, mediaQuery, dedupe) {\n    if (typeof modules === 'string') {\n      // eslint-disable-next-line no-param-reassign\n      modules = [[null, modules, '']];\n    }\n\n    var alreadyImportedModules = {};\n\n    if (dedupe) {\n      for (var i = 0; i < this.length; i++) {\n        // eslint-disable-next-line prefer-destructuring\n        var id = this[i][0];\n\n        if (id != null) {\n          alreadyImportedModules[id] = true;\n        }\n      }\n    }\n\n    for (var _i = 0; _i < modules.length; _i++) {\n      var item = [].concat(modules[_i]);\n\n      if (dedupe && alreadyImportedModules[item[0]]) {\n        // eslint-disable-next-line no-continue\n        continue;\n      }\n\n      if (mediaQuery) {\n        if (!item[2]) {\n          item[2] = mediaQuery;\n        } else {\n          item[2] = \"\".concat(mediaQuery, \" and \").concat(item[2]);\n        }\n      }\n\n      list.push(item);\n    }\n  };\n\n  return list;\n};\n\nfunction cssWithMappingToString(item, useSourceMap) {\n  var content = item[1] || ''; // eslint-disable-next-line prefer-destructuring\n\n  var cssMapping = item[3];\n\n  if (!cssMapping) {\n    return content;\n  }\n\n  if (useSourceMap && typeof btoa === 'function') {\n    var sourceMapping = toComment(cssMapping);\n    var sourceURLs = cssMapping.sources.map(function (source) {\n      return \"/*# sourceURL=\".concat(cssMapping.sourceRoot || '').concat(source, \" */\");\n    });\n    return [content].concat(sourceURLs).concat([sourceMapping]).join('\\n');\n  }\n\n  return [content].join('\\n');\n} // Adapted from convert-source-map (MIT)\n\n\nfunction toComment(sourceMap) {\n  // eslint-disable-next-line no-undef\n  var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));\n  var data = \"sourceMappingURL=data:application/json;charset=utf-8;base64,\".concat(base64);\n  return \"/*# \".concat(data, \" */\");\n}\n\n//# sourceURL=webpack:///./node_modules/css-loader/dist/runtime/api.js?");
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports) {
 
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function (bytes) {
-	  var start = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-	  var length = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : bytes.length - start;
-
-	  var crc = -1;
-	  for (var _i = start, l = start + length; _i < l; _i++) {
-	    crc = crc >>> 8 ^ table[(crc ^ bytes[_i]) & 0xFF];
-	  }
-	  return crc ^ -1;
-	};
-
-	var table = new Uint32Array(256);
-
-	for (var i = 0; i < 256; i++) {
-	  var c = i;
-	  for (var k = 0; k < 8; k++) {
-	    c = (c & 1) !== 0 ? 0xEDB88320 ^ c >>> 1 : c >>> 1;
-	  }
-	  table[i] = c;
-	}
-
-	/**
-	 *
-	 * @param {Uint8Array} bytes
-	 * @param {number} start
-	 * @param {number} length
-	 * @return {number}
-	 */
-	;
-
-/***/ }),
-/* 3 */
+/***/ "./node_modules/events/events.js":
+/*!***************************************!*\
+  !*** ./node_modules/events/events.js ***!
+  \***************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.Frame = exports.APNG = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _player = __webpack_require__(4);
-
-	var _player2 = _interopRequireDefault(_player);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	/**
-	 * @property {number} currFrameNumber
-	 * @property {Frame} currFrame
-	 * @property {boolean} paused
-	 * @property {boolean} ended
-	 */
-	var APNG = exports.APNG = function () {
-	    function APNG() {
-	        _classCallCheck(this, APNG);
-
-	        this.width = 0;
-	        this.height = 0;
-	        this.numPlays = 0;
-	        this.playTime = 0;
-	        this.frames = [];
-	    }
-	    /** @type {number} */
-
-	    /** @type {number} */
-
-	    /** @type {number} */
-
-	    /** @type {number} */
-
-	    /** @type {Frame[]} */
-
-
-	    _createClass(APNG, [{
-	        key: 'createImages',
-
-
-	        /**
-	         *
-	         * @return {Promise.<*>}
-	         */
-	        value: function createImages() {
-	            return Promise.all(this.frames.map(function (f) {
-	                return f.createImage();
-	            }));
-	        }
-
-	        /**
-	         *
-	         * @param {CanvasRenderingContext2D} context
-	         * @param {boolean} autoPlay
-	         * @return {Promise.<Player>}
-	         */
-
-	    }, {
-	        key: 'getPlayer',
-	        value: function getPlayer(context) {
-	            var _this = this;
-
-	            var autoPlay = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-	            return this.createImages().then(function () {
-	                return new _player2.default(_this, context, autoPlay);
-	            });
-	        }
-	    }]);
-
-	    return APNG;
-	}();
-
-	var Frame = exports.Frame = function () {
-	    function Frame() {
-	        _classCallCheck(this, Frame);
-
-	        this.left = 0;
-	        this.top = 0;
-	        this.width = 0;
-	        this.height = 0;
-	        this.delay = 0;
-	        this.disposeOp = 0;
-	        this.blendOp = 0;
-	        this.imageData = null;
-	        this.imageElement = null;
-	    }
-	    /** @type {number} */
-
-	    /** @type {number} */
-
-	    /** @type {number} */
-
-	    /** @type {number} */
-
-	    /** @type {number} */
-
-	    /** @type {number} */
-
-	    /** @type {number} */
-
-	    /** @type {Blob} */
-
-	    /** @type {HTMLImageElement} */
-
-
-	    _createClass(Frame, [{
-	        key: 'createImage',
-	        value: function createImage() {
-	            var _this2 = this;
-
-	            if (this.imageElement) {
-	                return Promise.resolve();
-	            }
-	            return new Promise(function (resolve, reject) {
-	                var url = URL.createObjectURL(_this2.imageData);
-	                _this2.imageElement = document.createElement('img');
-	                _this2.imageElement.onload = function () {
-	                    URL.revokeObjectURL(url);
-	                    resolve();
-	                };
-	                _this2.imageElement.onerror = function () {
-	                    URL.revokeObjectURL(url);
-	                    _this2.imageElement = null;
-	                    reject(new Error("Image creation error"));
-	                };
-	                _this2.imageElement.src = url;
-	            });
-	        }
-	    }]);
-
-	    return Frame;
-	}();
+"use strict";
+eval("// Copyright Joyent, Inc. and other Node contributors.\n//\n// Permission is hereby granted, free of charge, to any person obtaining a\n// copy of this software and associated documentation files (the\n// \"Software\"), to deal in the Software without restriction, including\n// without limitation the rights to use, copy, modify, merge, publish,\n// distribute, sublicense, and/or sell copies of the Software, and to permit\n// persons to whom the Software is furnished to do so, subject to the\n// following conditions:\n//\n// The above copyright notice and this permission notice shall be included\n// in all copies or substantial portions of the Software.\n//\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS\n// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN\n// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,\n// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR\n// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE\n// USE OR OTHER DEALINGS IN THE SOFTWARE.\n\n\n\nvar R = typeof Reflect === 'object' ? Reflect : null\nvar ReflectApply = R && typeof R.apply === 'function'\n  ? R.apply\n  : function ReflectApply(target, receiver, args) {\n    return Function.prototype.apply.call(target, receiver, args);\n  }\n\nvar ReflectOwnKeys\nif (R && typeof R.ownKeys === 'function') {\n  ReflectOwnKeys = R.ownKeys\n} else if (Object.getOwnPropertySymbols) {\n  ReflectOwnKeys = function ReflectOwnKeys(target) {\n    return Object.getOwnPropertyNames(target)\n      .concat(Object.getOwnPropertySymbols(target));\n  };\n} else {\n  ReflectOwnKeys = function ReflectOwnKeys(target) {\n    return Object.getOwnPropertyNames(target);\n  };\n}\n\nfunction ProcessEmitWarning(warning) {\n  if (console && console.warn) console.warn(warning);\n}\n\nvar NumberIsNaN = Number.isNaN || function NumberIsNaN(value) {\n  return value !== value;\n}\n\nfunction EventEmitter() {\n  EventEmitter.init.call(this);\n}\nmodule.exports = EventEmitter;\n\n// Backwards-compat with node 0.10.x\nEventEmitter.EventEmitter = EventEmitter;\n\nEventEmitter.prototype._events = undefined;\nEventEmitter.prototype._eventsCount = 0;\nEventEmitter.prototype._maxListeners = undefined;\n\n// By default EventEmitters will print a warning if more than 10 listeners are\n// added to it. This is a useful default which helps finding memory leaks.\nvar defaultMaxListeners = 10;\n\nfunction checkListener(listener) {\n  if (typeof listener !== 'function') {\n    throw new TypeError('The \"listener\" argument must be of type Function. Received type ' + typeof listener);\n  }\n}\n\nObject.defineProperty(EventEmitter, 'defaultMaxListeners', {\n  enumerable: true,\n  get: function() {\n    return defaultMaxListeners;\n  },\n  set: function(arg) {\n    if (typeof arg !== 'number' || arg < 0 || NumberIsNaN(arg)) {\n      throw new RangeError('The value of \"defaultMaxListeners\" is out of range. It must be a non-negative number. Received ' + arg + '.');\n    }\n    defaultMaxListeners = arg;\n  }\n});\n\nEventEmitter.init = function() {\n\n  if (this._events === undefined ||\n      this._events === Object.getPrototypeOf(this)._events) {\n    this._events = Object.create(null);\n    this._eventsCount = 0;\n  }\n\n  this._maxListeners = this._maxListeners || undefined;\n};\n\n// Obviously not all Emitters should be limited to 10. This function allows\n// that to be increased. Set to zero for unlimited.\nEventEmitter.prototype.setMaxListeners = function setMaxListeners(n) {\n  if (typeof n !== 'number' || n < 0 || NumberIsNaN(n)) {\n    throw new RangeError('The value of \"n\" is out of range. It must be a non-negative number. Received ' + n + '.');\n  }\n  this._maxListeners = n;\n  return this;\n};\n\nfunction _getMaxListeners(that) {\n  if (that._maxListeners === undefined)\n    return EventEmitter.defaultMaxListeners;\n  return that._maxListeners;\n}\n\nEventEmitter.prototype.getMaxListeners = function getMaxListeners() {\n  return _getMaxListeners(this);\n};\n\nEventEmitter.prototype.emit = function emit(type) {\n  var args = [];\n  for (var i = 1; i < arguments.length; i++) args.push(arguments[i]);\n  var doError = (type === 'error');\n\n  var events = this._events;\n  if (events !== undefined)\n    doError = (doError && events.error === undefined);\n  else if (!doError)\n    return false;\n\n  // If there is no 'error' event listener then throw.\n  if (doError) {\n    var er;\n    if (args.length > 0)\n      er = args[0];\n    if (er instanceof Error) {\n      // Note: The comments on the `throw` lines are intentional, they show\n      // up in Node's output if this results in an unhandled exception.\n      throw er; // Unhandled 'error' event\n    }\n    // At least give some kind of context to the user\n    var err = new Error('Unhandled error.' + (er ? ' (' + er.message + ')' : ''));\n    err.context = er;\n    throw err; // Unhandled 'error' event\n  }\n\n  var handler = events[type];\n\n  if (handler === undefined)\n    return false;\n\n  if (typeof handler === 'function') {\n    ReflectApply(handler, this, args);\n  } else {\n    var len = handler.length;\n    var listeners = arrayClone(handler, len);\n    for (var i = 0; i < len; ++i)\n      ReflectApply(listeners[i], this, args);\n  }\n\n  return true;\n};\n\nfunction _addListener(target, type, listener, prepend) {\n  var m;\n  var events;\n  var existing;\n\n  checkListener(listener);\n\n  events = target._events;\n  if (events === undefined) {\n    events = target._events = Object.create(null);\n    target._eventsCount = 0;\n  } else {\n    // To avoid recursion in the case that type === \"newListener\"! Before\n    // adding it to the listeners, first emit \"newListener\".\n    if (events.newListener !== undefined) {\n      target.emit('newListener', type,\n                  listener.listener ? listener.listener : listener);\n\n      // Re-assign `events` because a newListener handler could have caused the\n      // this._events to be assigned to a new object\n      events = target._events;\n    }\n    existing = events[type];\n  }\n\n  if (existing === undefined) {\n    // Optimize the case of one listener. Don't need the extra array object.\n    existing = events[type] = listener;\n    ++target._eventsCount;\n  } else {\n    if (typeof existing === 'function') {\n      // Adding the second element, need to change to array.\n      existing = events[type] =\n        prepend ? [listener, existing] : [existing, listener];\n      // If we've already got an array, just append.\n    } else if (prepend) {\n      existing.unshift(listener);\n    } else {\n      existing.push(listener);\n    }\n\n    // Check for listener leak\n    m = _getMaxListeners(target);\n    if (m > 0 && existing.length > m && !existing.warned) {\n      existing.warned = true;\n      // No error code for this since it is a Warning\n      // eslint-disable-next-line no-restricted-syntax\n      var w = new Error('Possible EventEmitter memory leak detected. ' +\n                          existing.length + ' ' + String(type) + ' listeners ' +\n                          'added. Use emitter.setMaxListeners() to ' +\n                          'increase limit');\n      w.name = 'MaxListenersExceededWarning';\n      w.emitter = target;\n      w.type = type;\n      w.count = existing.length;\n      ProcessEmitWarning(w);\n    }\n  }\n\n  return target;\n}\n\nEventEmitter.prototype.addListener = function addListener(type, listener) {\n  return _addListener(this, type, listener, false);\n};\n\nEventEmitter.prototype.on = EventEmitter.prototype.addListener;\n\nEventEmitter.prototype.prependListener =\n    function prependListener(type, listener) {\n      return _addListener(this, type, listener, true);\n    };\n\nfunction onceWrapper() {\n  if (!this.fired) {\n    this.target.removeListener(this.type, this.wrapFn);\n    this.fired = true;\n    if (arguments.length === 0)\n      return this.listener.call(this.target);\n    return this.listener.apply(this.target, arguments);\n  }\n}\n\nfunction _onceWrap(target, type, listener) {\n  var state = { fired: false, wrapFn: undefined, target: target, type: type, listener: listener };\n  var wrapped = onceWrapper.bind(state);\n  wrapped.listener = listener;\n  state.wrapFn = wrapped;\n  return wrapped;\n}\n\nEventEmitter.prototype.once = function once(type, listener) {\n  checkListener(listener);\n  this.on(type, _onceWrap(this, type, listener));\n  return this;\n};\n\nEventEmitter.prototype.prependOnceListener =\n    function prependOnceListener(type, listener) {\n      checkListener(listener);\n      this.prependListener(type, _onceWrap(this, type, listener));\n      return this;\n    };\n\n// Emits a 'removeListener' event if and only if the listener was removed.\nEventEmitter.prototype.removeListener =\n    function removeListener(type, listener) {\n      var list, events, position, i, originalListener;\n\n      checkListener(listener);\n\n      events = this._events;\n      if (events === undefined)\n        return this;\n\n      list = events[type];\n      if (list === undefined)\n        return this;\n\n      if (list === listener || list.listener === listener) {\n        if (--this._eventsCount === 0)\n          this._events = Object.create(null);\n        else {\n          delete events[type];\n          if (events.removeListener)\n            this.emit('removeListener', type, list.listener || listener);\n        }\n      } else if (typeof list !== 'function') {\n        position = -1;\n\n        for (i = list.length - 1; i >= 0; i--) {\n          if (list[i] === listener || list[i].listener === listener) {\n            originalListener = list[i].listener;\n            position = i;\n            break;\n          }\n        }\n\n        if (position < 0)\n          return this;\n\n        if (position === 0)\n          list.shift();\n        else {\n          spliceOne(list, position);\n        }\n\n        if (list.length === 1)\n          events[type] = list[0];\n\n        if (events.removeListener !== undefined)\n          this.emit('removeListener', type, originalListener || listener);\n      }\n\n      return this;\n    };\n\nEventEmitter.prototype.off = EventEmitter.prototype.removeListener;\n\nEventEmitter.prototype.removeAllListeners =\n    function removeAllListeners(type) {\n      var listeners, events, i;\n\n      events = this._events;\n      if (events === undefined)\n        return this;\n\n      // not listening for removeListener, no need to emit\n      if (events.removeListener === undefined) {\n        if (arguments.length === 0) {\n          this._events = Object.create(null);\n          this._eventsCount = 0;\n        } else if (events[type] !== undefined) {\n          if (--this._eventsCount === 0)\n            this._events = Object.create(null);\n          else\n            delete events[type];\n        }\n        return this;\n      }\n\n      // emit removeListener for all listeners on all events\n      if (arguments.length === 0) {\n        var keys = Object.keys(events);\n        var key;\n        for (i = 0; i < keys.length; ++i) {\n          key = keys[i];\n          if (key === 'removeListener') continue;\n          this.removeAllListeners(key);\n        }\n        this.removeAllListeners('removeListener');\n        this._events = Object.create(null);\n        this._eventsCount = 0;\n        return this;\n      }\n\n      listeners = events[type];\n\n      if (typeof listeners === 'function') {\n        this.removeListener(type, listeners);\n      } else if (listeners !== undefined) {\n        // LIFO order\n        for (i = listeners.length - 1; i >= 0; i--) {\n          this.removeListener(type, listeners[i]);\n        }\n      }\n\n      return this;\n    };\n\nfunction _listeners(target, type, unwrap) {\n  var events = target._events;\n\n  if (events === undefined)\n    return [];\n\n  var evlistener = events[type];\n  if (evlistener === undefined)\n    return [];\n\n  if (typeof evlistener === 'function')\n    return unwrap ? [evlistener.listener || evlistener] : [evlistener];\n\n  return unwrap ?\n    unwrapListeners(evlistener) : arrayClone(evlistener, evlistener.length);\n}\n\nEventEmitter.prototype.listeners = function listeners(type) {\n  return _listeners(this, type, true);\n};\n\nEventEmitter.prototype.rawListeners = function rawListeners(type) {\n  return _listeners(this, type, false);\n};\n\nEventEmitter.listenerCount = function(emitter, type) {\n  if (typeof emitter.listenerCount === 'function') {\n    return emitter.listenerCount(type);\n  } else {\n    return listenerCount.call(emitter, type);\n  }\n};\n\nEventEmitter.prototype.listenerCount = listenerCount;\nfunction listenerCount(type) {\n  var events = this._events;\n\n  if (events !== undefined) {\n    var evlistener = events[type];\n\n    if (typeof evlistener === 'function') {\n      return 1;\n    } else if (evlistener !== undefined) {\n      return evlistener.length;\n    }\n  }\n\n  return 0;\n}\n\nEventEmitter.prototype.eventNames = function eventNames() {\n  return this._eventsCount > 0 ? ReflectOwnKeys(this._events) : [];\n};\n\nfunction arrayClone(arr, n) {\n  var copy = new Array(n);\n  for (var i = 0; i < n; ++i)\n    copy[i] = arr[i];\n  return copy;\n}\n\nfunction spliceOne(list, index) {\n  for (; index + 1 < list.length; index++)\n    list[index] = list[index + 1];\n  list.pop();\n}\n\nfunction unwrapListeners(arr) {\n  var ret = new Array(arr.length);\n  for (var i = 0; i < ret.length; ++i) {\n    ret[i] = arr[i].listener || arr[i];\n  }\n  return ret;\n}\n\n\n//# sourceURL=webpack:///./node_modules/events/events.js?");
 
 /***/ }),
-/* 4 */
+
+/***/ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js ***!
+  \****************************************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _events = __webpack_require__(5);
-
-	var _events2 = _interopRequireDefault(_events);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var _class = function (_EventEmitter) {
-	    _inherits(_class, _EventEmitter);
-
-	    /**
-	     * @param {APNG} apng
-	     * @param {CanvasRenderingContext2D} context
-	     * @param {boolean} autoPlay
-	     */
-
-	    /** @type {boolean} */
-
-	    /** @type {number} */
-
-	    /** @type {Frame} */
-
-	    /** @type {number} */
-	    function _class(apng, context, autoPlay) {
-	        _classCallCheck(this, _class);
-
-	        var _this = _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this));
-
-	        _this.playbackRate = 1.0;
-	        _this._currentFrameNumber = 0;
-	        _this._ended = false;
-	        _this._paused = true;
-	        _this._numPlays = 0;
-
-	        _this._apng = apng;
-	        _this.context = context;
-	        _this.stop();
-	        if (autoPlay) {
-	            _this.play();
-	        }
-	        return _this;
-	    }
-
-	    /**
-	     *
-	     * @return {number}
-	     */
-
-	    /** @type {number} */
-
-
-	    /** @type {boolean} */
-
-	    /** @type {ImageData} */
-
-
-	    /** @type {APNG} */
-
-	    /** @type {CanvasRenderingContext2D} */
-
-
-	    _createClass(_class, [{
-	        key: 'renderNextFrame',
-	        value: function renderNextFrame() {
-	            this._currentFrameNumber = (this._currentFrameNumber + 1) % this._apng.frames.length;
-	            if (this._currentFrameNumber === this._apng.frames.length - 1) {
-	                this._numPlays++;
-	                if (this._apng.numPlays !== 0 && this._numPlays >= this._apng.numPlays) {
-	                    this._ended = true;
-	                    this._paused = true;
-	                }
-	            }
-
-	            if (this._prevFrame && this._prevFrame.disposeOp == 1) {
-	                this.context.clearRect(this._prevFrame.left, this._prevFrame.top, this._prevFrame.width, this._prevFrame.height);
-	            } else if (this._prevFrame && this._prevFrame.disposeOp == 2) {
-	                this.context.putImageData(this._prevFrameData, this._prevFrame.left, this._prevFrame.top);
-	            }
-
-	            var frame = this.currentFrame;
-	            this._prevFrame = frame;
-	            this._prevFrameData = null;
-	            if (frame.disposeOp == 2) {
-	                this._prevFrameData = this.context.getImageData(frame.left, frame.top, frame.width, frame.height);
-	            }
-	            if (frame.blendOp == 0) {
-	                this.context.clearRect(frame.left, frame.top, frame.width, frame.height);
-	            }
-
-	            this.context.drawImage(frame.imageElement, frame.left, frame.top);
-
-	            this.emit('frame', this._currentFrameNumber);
-	            if (this._ended) {
-	                this.emit('end');
-	            }
-	        }
-
-	        // playback
-
-	    }, {
-	        key: 'play',
-	        value: function play() {
-	            var _this2 = this;
-
-	            this.emit('play');
-
-	            if (this._ended) {
-	                this.stop();
-	            }
-	            this._paused = false;
-
-	            var nextRenderTime = performance.now() + this.currentFrame.delay / this.playbackRate;
-	            var tick = function tick(now) {
-	                if (_this2._ended || _this2._paused) {
-	                    return;
-	                }
-	                if (now >= nextRenderTime) {
-	                    while (now - nextRenderTime >= _this2._apng.playTime / _this2.playbackRate) {
-	                        nextRenderTime += _this2._apng.playTime / _this2.playbackRate;
-	                        _this2._numPlays++;
-	                    }
-	                    do {
-	                        _this2.renderNextFrame();
-	                        nextRenderTime += _this2.currentFrame.delay / _this2.playbackRate;
-	                    } while (!_this2._ended && now > nextRenderTime);
-	                }
-	                requestAnimationFrame(tick);
-	            };
-	            requestAnimationFrame(tick);
-	        }
-	    }, {
-	        key: 'pause',
-	        value: function pause() {
-	            if (!this._paused) {
-	                this.emit('pause');
-	                this._paused = true;
-	            }
-	        }
-	    }, {
-	        key: 'stop',
-	        value: function stop() {
-	            this.emit('stop');
-	            this._numPlays = 0;
-	            this._ended = false;
-	            this._paused = true;
-	            // render first frame
-	            this._currentFrameNumber = -1;
-	            this.context.clearRect(0, 0, this._apng.width, this._apng.height);
-	            this.renderNextFrame();
-	        }
-	    }, {
-	        key: 'currentFrameNumber',
-	        get: function get() {
-	            return this._currentFrameNumber;
-	        }
-
-	        /**
-	         *
-	         * @return {Frame}
-	         */
-
-	    }, {
-	        key: 'currentFrame',
-	        get: function get() {
-	            return this._apng.frames[this._currentFrameNumber];
-	        }
-	    }, {
-	        key: 'paused',
-	        get: function get() {
-	            return this._paused;
-	        }
-	    }, {
-	        key: 'ended',
-	        get: function get() {
-	            return this._ended;
-	        }
-	    }]);
-
-	    return _class;
-	}(_events2.default);
-
-	exports.default = _class;
+"use strict";
+eval("\n\nvar isOldIE = function isOldIE() {\n  var memo;\n  return function memorize() {\n    if (typeof memo === 'undefined') {\n      // Test for IE <= 9 as proposed by Browserhacks\n      // @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805\n      // Tests for existence of standard globals is to allow style-loader\n      // to operate correctly into non-standard environments\n      // @see https://github.com/webpack-contrib/style-loader/issues/177\n      memo = Boolean(window && document && document.all && !window.atob);\n    }\n\n    return memo;\n  };\n}();\n\nvar getTarget = function getTarget() {\n  var memo = {};\n  return function memorize(target) {\n    if (typeof memo[target] === 'undefined') {\n      var styleTarget = document.querySelector(target); // Special case to return head of iframe instead of iframe itself\n\n      if (window.HTMLIFrameElement && styleTarget instanceof window.HTMLIFrameElement) {\n        try {\n          // This will throw an exception if access to iframe is blocked\n          // due to cross-origin restrictions\n          styleTarget = styleTarget.contentDocument.head;\n        } catch (e) {\n          // istanbul ignore next\n          styleTarget = null;\n        }\n      }\n\n      memo[target] = styleTarget;\n    }\n\n    return memo[target];\n  };\n}();\n\nvar stylesInDom = [];\n\nfunction getIndexByIdentifier(identifier) {\n  var result = -1;\n\n  for (var i = 0; i < stylesInDom.length; i++) {\n    if (stylesInDom[i].identifier === identifier) {\n      result = i;\n      break;\n    }\n  }\n\n  return result;\n}\n\nfunction modulesToDom(list, options) {\n  var idCountMap = {};\n  var identifiers = [];\n\n  for (var i = 0; i < list.length; i++) {\n    var item = list[i];\n    var id = options.base ? item[0] + options.base : item[0];\n    var count = idCountMap[id] || 0;\n    var identifier = \"\".concat(id, \" \").concat(count);\n    idCountMap[id] = count + 1;\n    var index = getIndexByIdentifier(identifier);\n    var obj = {\n      css: item[1],\n      media: item[2],\n      sourceMap: item[3]\n    };\n\n    if (index !== -1) {\n      stylesInDom[index].references++;\n      stylesInDom[index].updater(obj);\n    } else {\n      stylesInDom.push({\n        identifier: identifier,\n        updater: addStyle(obj, options),\n        references: 1\n      });\n    }\n\n    identifiers.push(identifier);\n  }\n\n  return identifiers;\n}\n\nfunction insertStyleElement(options) {\n  var style = document.createElement('style');\n  var attributes = options.attributes || {};\n\n  if (typeof attributes.nonce === 'undefined') {\n    var nonce =  true ? __webpack_require__.nc : undefined;\n\n    if (nonce) {\n      attributes.nonce = nonce;\n    }\n  }\n\n  Object.keys(attributes).forEach(function (key) {\n    style.setAttribute(key, attributes[key]);\n  });\n\n  if (typeof options.insert === 'function') {\n    options.insert(style);\n  } else {\n    var target = getTarget(options.insert || 'head');\n\n    if (!target) {\n      throw new Error(\"Couldn't find a style target. This probably means that the value for the 'insert' parameter is invalid.\");\n    }\n\n    target.appendChild(style);\n  }\n\n  return style;\n}\n\nfunction removeStyleElement(style) {\n  // istanbul ignore if\n  if (style.parentNode === null) {\n    return false;\n  }\n\n  style.parentNode.removeChild(style);\n}\n/* istanbul ignore next  */\n\n\nvar replaceText = function replaceText() {\n  var textStore = [];\n  return function replace(index, replacement) {\n    textStore[index] = replacement;\n    return textStore.filter(Boolean).join('\\n');\n  };\n}();\n\nfunction applyToSingletonTag(style, index, remove, obj) {\n  var css = remove ? '' : obj.media ? \"@media \".concat(obj.media, \" {\").concat(obj.css, \"}\") : obj.css; // For old IE\n\n  /* istanbul ignore if  */\n\n  if (style.styleSheet) {\n    style.styleSheet.cssText = replaceText(index, css);\n  } else {\n    var cssNode = document.createTextNode(css);\n    var childNodes = style.childNodes;\n\n    if (childNodes[index]) {\n      style.removeChild(childNodes[index]);\n    }\n\n    if (childNodes.length) {\n      style.insertBefore(cssNode, childNodes[index]);\n    } else {\n      style.appendChild(cssNode);\n    }\n  }\n}\n\nfunction applyToTag(style, options, obj) {\n  var css = obj.css;\n  var media = obj.media;\n  var sourceMap = obj.sourceMap;\n\n  if (media) {\n    style.setAttribute('media', media);\n  } else {\n    style.removeAttribute('media');\n  }\n\n  if (sourceMap && btoa) {\n    css += \"\\n/*# sourceMappingURL=data:application/json;base64,\".concat(btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))), \" */\");\n  } // For old IE\n\n  /* istanbul ignore if  */\n\n\n  if (style.styleSheet) {\n    style.styleSheet.cssText = css;\n  } else {\n    while (style.firstChild) {\n      style.removeChild(style.firstChild);\n    }\n\n    style.appendChild(document.createTextNode(css));\n  }\n}\n\nvar singleton = null;\nvar singletonCounter = 0;\n\nfunction addStyle(obj, options) {\n  var style;\n  var update;\n  var remove;\n\n  if (options.singleton) {\n    var styleIndex = singletonCounter++;\n    style = singleton || (singleton = insertStyleElement(options));\n    update = applyToSingletonTag.bind(null, style, styleIndex, false);\n    remove = applyToSingletonTag.bind(null, style, styleIndex, true);\n  } else {\n    style = insertStyleElement(options);\n    update = applyToTag.bind(null, style, options);\n\n    remove = function remove() {\n      removeStyleElement(style);\n    };\n  }\n\n  update(obj);\n  return function updateStyle(newObj) {\n    if (newObj) {\n      if (newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap) {\n        return;\n      }\n\n      update(obj = newObj);\n    } else {\n      remove();\n    }\n  };\n}\n\nmodule.exports = function (list, options) {\n  options = options || {}; // Force single-tag solution on IE6-9, which has a hard limit on the # of <style>\n  // tags it will allow on a page\n\n  if (!options.singleton && typeof options.singleton !== 'boolean') {\n    options.singleton = isOldIE();\n  }\n\n  list = list || [];\n  var lastIdentifiers = modulesToDom(list, options);\n  return function update(newList) {\n    newList = newList || [];\n\n    if (Object.prototype.toString.call(newList) !== '[object Array]') {\n      return;\n    }\n\n    for (var i = 0; i < lastIdentifiers.length; i++) {\n      var identifier = lastIdentifiers[i];\n      var index = getIndexByIdentifier(identifier);\n      stylesInDom[index].references--;\n    }\n\n    var newLastIdentifiers = modulesToDom(newList, options);\n\n    for (var _i = 0; _i < lastIdentifiers.length; _i++) {\n      var _identifier = lastIdentifiers[_i];\n\n      var _index = getIndexByIdentifier(_identifier);\n\n      if (stylesInDom[_index].references === 0) {\n        stylesInDom[_index].updater();\n\n        stylesInDom.splice(_index, 1);\n      }\n    }\n\n    lastIdentifiers = newLastIdentifiers;\n  };\n};\n\n//# sourceURL=webpack:///./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js?");
 
 /***/ }),
-/* 5 */
-/***/ (function(module, exports) {
 
-	// Copyright Joyent, Inc. and other Node contributors.
-	//
-	// Permission is hereby granted, free of charge, to any person obtaining a
-	// copy of this software and associated documentation files (the
-	// "Software"), to deal in the Software without restriction, including
-	// without limitation the rights to use, copy, modify, merge, publish,
-	// distribute, sublicense, and/or sell copies of the Software, and to permit
-	// persons to whom the Software is furnished to do so, subject to the
-	// following conditions:
-	//
-	// The above copyright notice and this permission notice shall be included
-	// in all copies or substantial portions of the Software.
-	//
-	// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-	// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-	// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-	// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-	// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-	// USE OR OTHER DEALINGS IN THE SOFTWARE.
+/***/ "./src/demo-page/index.js":
+/*!********************************!*\
+  !*** ./src/demo-page/index.js ***!
+  \********************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-	function EventEmitter() {
-	  this._events = this._events || {};
-	  this._maxListeners = this._maxListeners || undefined;
-	}
-	module.exports = EventEmitter;
-
-	// Backwards-compat with node 0.10.x
-	EventEmitter.EventEmitter = EventEmitter;
-
-	EventEmitter.prototype._events = undefined;
-	EventEmitter.prototype._maxListeners = undefined;
-
-	// By default EventEmitters will print a warning if more than 10 listeners are
-	// added to it. This is a useful default which helps finding memory leaks.
-	EventEmitter.defaultMaxListeners = 10;
-
-	// Obviously not all Emitters should be limited to 10. This function allows
-	// that to be increased. Set to zero for unlimited.
-	EventEmitter.prototype.setMaxListeners = function(n) {
-	  if (!isNumber(n) || n < 0 || isNaN(n))
-	    throw TypeError('n must be a positive number');
-	  this._maxListeners = n;
-	  return this;
-	};
-
-	EventEmitter.prototype.emit = function(type) {
-	  var er, handler, len, args, i, listeners;
-
-	  if (!this._events)
-	    this._events = {};
-
-	  // If there is no 'error' event listener then throw.
-	  if (type === 'error') {
-	    if (!this._events.error ||
-	        (isObject(this._events.error) && !this._events.error.length)) {
-	      er = arguments[1];
-	      if (er instanceof Error) {
-	        throw er; // Unhandled 'error' event
-	      } else {
-	        // At least give some kind of context to the user
-	        var err = new Error('Uncaught, unspecified "error" event. (' + er + ')');
-	        err.context = er;
-	        throw err;
-	      }
-	    }
-	  }
-
-	  handler = this._events[type];
-
-	  if (isUndefined(handler))
-	    return false;
-
-	  if (isFunction(handler)) {
-	    switch (arguments.length) {
-	      // fast cases
-	      case 1:
-	        handler.call(this);
-	        break;
-	      case 2:
-	        handler.call(this, arguments[1]);
-	        break;
-	      case 3:
-	        handler.call(this, arguments[1], arguments[2]);
-	        break;
-	      // slower
-	      default:
-	        args = Array.prototype.slice.call(arguments, 1);
-	        handler.apply(this, args);
-	    }
-	  } else if (isObject(handler)) {
-	    args = Array.prototype.slice.call(arguments, 1);
-	    listeners = handler.slice();
-	    len = listeners.length;
-	    for (i = 0; i < len; i++)
-	      listeners[i].apply(this, args);
-	  }
-
-	  return true;
-	};
-
-	EventEmitter.prototype.addListener = function(type, listener) {
-	  var m;
-
-	  if (!isFunction(listener))
-	    throw TypeError('listener must be a function');
-
-	  if (!this._events)
-	    this._events = {};
-
-	  // To avoid recursion in the case that type === "newListener"! Before
-	  // adding it to the listeners, first emit "newListener".
-	  if (this._events.newListener)
-	    this.emit('newListener', type,
-	              isFunction(listener.listener) ?
-	              listener.listener : listener);
-
-	  if (!this._events[type])
-	    // Optimize the case of one listener. Don't need the extra array object.
-	    this._events[type] = listener;
-	  else if (isObject(this._events[type]))
-	    // If we've already got an array, just append.
-	    this._events[type].push(listener);
-	  else
-	    // Adding the second element, need to change to array.
-	    this._events[type] = [this._events[type], listener];
-
-	  // Check for listener leak
-	  if (isObject(this._events[type]) && !this._events[type].warned) {
-	    if (!isUndefined(this._maxListeners)) {
-	      m = this._maxListeners;
-	    } else {
-	      m = EventEmitter.defaultMaxListeners;
-	    }
-
-	    if (m && m > 0 && this._events[type].length > m) {
-	      this._events[type].warned = true;
-	      console.error('(node) warning: possible EventEmitter memory ' +
-	                    'leak detected. %d listeners added. ' +
-	                    'Use emitter.setMaxListeners() to increase limit.',
-	                    this._events[type].length);
-	      if (typeof console.trace === 'function') {
-	        // not supported in IE 10
-	        console.trace();
-	      }
-	    }
-	  }
-
-	  return this;
-	};
-
-	EventEmitter.prototype.on = EventEmitter.prototype.addListener;
-
-	EventEmitter.prototype.once = function(type, listener) {
-	  if (!isFunction(listener))
-	    throw TypeError('listener must be a function');
-
-	  var fired = false;
-
-	  function g() {
-	    this.removeListener(type, g);
-
-	    if (!fired) {
-	      fired = true;
-	      listener.apply(this, arguments);
-	    }
-	  }
-
-	  g.listener = listener;
-	  this.on(type, g);
-
-	  return this;
-	};
-
-	// emits a 'removeListener' event iff the listener was removed
-	EventEmitter.prototype.removeListener = function(type, listener) {
-	  var list, position, length, i;
-
-	  if (!isFunction(listener))
-	    throw TypeError('listener must be a function');
-
-	  if (!this._events || !this._events[type])
-	    return this;
-
-	  list = this._events[type];
-	  length = list.length;
-	  position = -1;
-
-	  if (list === listener ||
-	      (isFunction(list.listener) && list.listener === listener)) {
-	    delete this._events[type];
-	    if (this._events.removeListener)
-	      this.emit('removeListener', type, listener);
-
-	  } else if (isObject(list)) {
-	    for (i = length; i-- > 0;) {
-	      if (list[i] === listener ||
-	          (list[i].listener && list[i].listener === listener)) {
-	        position = i;
-	        break;
-	      }
-	    }
-
-	    if (position < 0)
-	      return this;
-
-	    if (list.length === 1) {
-	      list.length = 0;
-	      delete this._events[type];
-	    } else {
-	      list.splice(position, 1);
-	    }
-
-	    if (this._events.removeListener)
-	      this.emit('removeListener', type, listener);
-	  }
-
-	  return this;
-	};
-
-	EventEmitter.prototype.removeAllListeners = function(type) {
-	  var key, listeners;
-
-	  if (!this._events)
-	    return this;
-
-	  // not listening for removeListener, no need to emit
-	  if (!this._events.removeListener) {
-	    if (arguments.length === 0)
-	      this._events = {};
-	    else if (this._events[type])
-	      delete this._events[type];
-	    return this;
-	  }
-
-	  // emit removeListener for all listeners on all events
-	  if (arguments.length === 0) {
-	    for (key in this._events) {
-	      if (key === 'removeListener') continue;
-	      this.removeAllListeners(key);
-	    }
-	    this.removeAllListeners('removeListener');
-	    this._events = {};
-	    return this;
-	  }
-
-	  listeners = this._events[type];
-
-	  if (isFunction(listeners)) {
-	    this.removeListener(type, listeners);
-	  } else if (listeners) {
-	    // LIFO order
-	    while (listeners.length)
-	      this.removeListener(type, listeners[listeners.length - 1]);
-	  }
-	  delete this._events[type];
-
-	  return this;
-	};
-
-	EventEmitter.prototype.listeners = function(type) {
-	  var ret;
-	  if (!this._events || !this._events[type])
-	    ret = [];
-	  else if (isFunction(this._events[type]))
-	    ret = [this._events[type]];
-	  else
-	    ret = this._events[type].slice();
-	  return ret;
-	};
-
-	EventEmitter.prototype.listenerCount = function(type) {
-	  if (this._events) {
-	    var evlistener = this._events[type];
-
-	    if (isFunction(evlistener))
-	      return 1;
-	    else if (evlistener)
-	      return evlistener.length;
-	  }
-	  return 0;
-	};
-
-	EventEmitter.listenerCount = function(emitter, type) {
-	  return emitter.listenerCount(type);
-	};
-
-	function isFunction(arg) {
-	  return typeof arg === 'function';
-	}
-
-	function isNumber(arg) {
-	  return typeof arg === 'number';
-	}
-
-	function isObject(arg) {
-	  return typeof arg === 'object' && arg !== null;
-	}
-
-	function isUndefined(arg) {
-	  return arg === void 0;
-	}
-
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _library_parser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../library/parser */ \"./src/library/parser.js\");\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.css */ \"./src/demo-page/style.css\");\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_style_css__WEBPACK_IMPORTED_MODULE_1__);\n\n\nvar fileInput = document.createElement('input');\nfileInput.type = 'file';\nfileInput.accept = 'image/png';\ndocument.getElementById('choose-btn').addEventListener('click', function () {\n  return fileInput.click();\n});\nfileInput.addEventListener('change', function () {\n  if (fileInput.files.length > 0) {\n    processFile(fileInput.files[0]);\n  }\n\n  fileInput.value = '';\n});\nvar player = null;\ndocument.getElementById('play-pause-btn').addEventListener('click', function () {\n  if (player) {\n    if (player.paused) {\n      player.play();\n    } else {\n      player.pause();\n    }\n  }\n});\ndocument.getElementById('stop-btn').addEventListener('click', function () {\n  return player && player.stop();\n});\nvar playbackRate = 1.0;\ndocument.getElementById('playback-rate').addEventListener('change', function (e) {\n  playbackRate = parseFloat(e.target.value);\n  document.getElementById('playback-rate-display').innerHTML = playbackRate.toString();\n\n  if (player) {\n    player.playbackRate = playbackRate;\n  }\n});\n\nfunction processFile(file) {\n  var resultBlock = document.querySelector('.apng-result');\n  var errorBlock = document.querySelector('.apng-error');\n  var errDiv = errorBlock.querySelector('.alert');\n  var infoDiv = document.querySelector('.apng-info');\n  var framesDiv = document.querySelector('.apng-frames');\n  var canvasDiv = document.querySelector('.apng-ani');\n  var logDiv = document.querySelector('.apng-log');\n  resultBlock.classList.add('hidden');\n  errorBlock.classList.add('hidden');\n  emptyEl(infoDiv);\n  emptyEl(framesDiv);\n  emptyEl(canvasDiv);\n  emptyEl(errDiv);\n  emptyEl(logDiv);\n\n  if (player) {\n    player.stop();\n  }\n\n  var log = [];\n  var reader = new FileReader();\n\n  reader.onload = function () {\n    var apng = Object(_library_parser__WEBPACK_IMPORTED_MODULE_0__[\"default\"])(reader.result);\n\n    if (apng instanceof Error) {\n      errDiv.appendChild(document.createTextNode(apng.message));\n      errorBlock.classList.remove('hidden');\n      return;\n    }\n\n    apng.createImages().then(function () {\n      infoDiv.appendChild(document.createTextNode(JSON.stringify(apng, null, '  ')));\n      apng.frames.forEach(function (f) {\n        var div = framesDiv.appendChild(document.createElement('div'));\n        div.appendChild(f.imageElement);\n        div.style.width = \"\".concat(apng.width, \"px\");\n        div.style.height = \"\".concat(apng.height, \"px\");\n        f.imageElement.style.left = \"\".concat(f.left, \"px\");\n        f.imageElement.style.top = \"\".concat(f.top, \"px\");\n      });\n      var canvas = document.createElement('canvas');\n      canvas.width = apng.width;\n      canvas.height = apng.height;\n      canvasDiv.appendChild(canvas);\n      apng.getPlayer(canvas.getContext('2d')).then(function (p) {\n        player = p;\n        player.playbackRate = playbackRate;\n        var em = player.emit;\n\n        player.emit = function (event) {\n          for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {\n            args[_key - 1] = arguments[_key];\n          }\n\n          log.unshift({\n            event: event,\n            args: args\n          });\n\n          if (log.length > 10) {\n            log.splice(10, log.length - 10);\n          }\n\n          logDiv.textContent = log.map(function (_ref) {\n            var event = _ref.event,\n                args = _ref.args;\n            return \"\".concat(event, \": \").concat(JSON.stringify(args));\n          }).join('\\n');\n          em.call.apply(em, [player, event].concat(args));\n        };\n\n        player.play();\n      });\n    });\n    resultBlock.classList.remove('hidden');\n  };\n\n  reader.readAsArrayBuffer(file);\n}\n\nfunction emptyEl(el) {\n  var c;\n\n  while ((c = el.firstChild) !== null) {\n    el.removeChild(c);\n  }\n}\n\n//# sourceURL=webpack:///./src/demo-page/index.js?");
 
 /***/ }),
-/* 6 */
+
+/***/ "./src/demo-page/style.css":
+/*!*********************************!*\
+  !*** ./src/demo-page/style.css ***!
+  \*********************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(7);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(9)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!../../node_modules/css-loader/index.js!./style.css", function() {
-				var newContent = require("!!../../node_modules/css-loader/index.js!./style.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
+eval("var api = __webpack_require__(/*! ../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ \"./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js\");\n            var content = __webpack_require__(/*! !../../node_modules/css-loader/dist/cjs.js!./style.css */ \"./node_modules/css-loader/dist/cjs.js!./src/demo-page/style.css\");\n\n            content = content.__esModule ? content.default : content;\n\n            if (typeof content === 'string') {\n              content = [[module.i, content, '']];\n            }\n\nvar options = {};\n\noptions.insert = \"head\";\noptions.singleton = false;\n\nvar update = api(content, options);\n\nvar exported = content.locals ? content.locals : {};\n\n\n\nmodule.exports = exported;\n\n//# sourceURL=webpack:///./src/demo-page/style.css?");
 
 /***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(8)();
-	// imports
+/***/ "./src/library/crc32.js":
+/*!******************************!*\
+  !*** ./src/library/crc32.js ***!
+  \******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-
-	// module
-	exports.push([module.id, ".apng-info,\r\n.apng-frames {\r\n    max-height: 600px;\r\n    overflow:   auto;\r\n}\r\n\r\n.apng-frames > div {\r\n    float:            left;\r\n    margin:           1px 1px 8px 8px;\r\n    box-shadow:       0 0 0 1px;\r\n    position:         relative;\r\n    background:       linear-gradient(45deg, #fff 25%, transparent 26%, transparent 75%, #fff 76%),\r\n                      linear-gradient(-45deg, #fff 25%, transparent 26%, transparent 75%, #fff 76%);\r\n    background-color: #eee;\r\n    background-size:  20px 20px;\r\n}\r\n\r\n.apng-frames > div > img {\r\n    position:   absolute;\r\n    box-shadow: 0 0 0 1px rgba(255, 0, 0, 0.75);\r\n}\r\n\r\n#playback-rate {\r\n    width:   12em;\r\n    display: inline-block;\r\n}\r\n\r\n.apng-log {\r\n    height: 10em;\r\n}", ""]);
-
-	// exports
-
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\nvar table = new Uint32Array(256);\n\nfor (var i = 0; i < 256; i++) {\n  var c = i;\n\n  for (var k = 0; k < 8; k++) {\n    c = (c & 1) !== 0 ? 0xedb88320 ^ c >>> 1 : c >>> 1;\n  }\n\n  table[i] = c;\n}\n/**\n *\n * @param {Uint8Array} bytes\n * @param {number} start\n * @param {number} length\n * @return {number}\n */\n\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (function (bytes) {\n  var start = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;\n  var length = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : bytes.length - start;\n  var crc = -1;\n\n  for (var _i = start, l = start + length; _i < l; _i++) {\n    crc = crc >>> 8 ^ table[(crc ^ bytes[_i]) & 0xff];\n  }\n\n  return crc ^ -1;\n});\n\n//# sourceURL=webpack:///./src/library/crc32.js?");
 
 /***/ }),
-/* 8 */
-/***/ (function(module, exports) {
 
-	/*
-		MIT License http://www.opensource.org/licenses/mit-license.php
-		Author Tobias Koppers @sokra
-	*/
-	// css base code, injected by the css-loader
-	module.exports = function() {
-		var list = [];
+/***/ "./src/library/parser.js":
+/*!*******************************!*\
+  !*** ./src/library/parser.js ***!
+  \*******************************/
+/*! exports provided: isNotPNG, isNotAPNG, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-		// return the list of modules as css string
-		list.toString = function toString() {
-			var result = [];
-			for(var i = 0; i < this.length; i++) {
-				var item = this[i];
-				if(item[2]) {
-					result.push("@media " + item[2] + "{" + item[1] + "}");
-				} else {
-					result.push(item[1]);
-				}
-			}
-			return result.join("");
-		};
-
-		// import a list of modules into the list
-		list.i = function(modules, mediaQuery) {
-			if(typeof modules === "string")
-				modules = [[null, modules, ""]];
-			var alreadyImportedModules = {};
-			for(var i = 0; i < this.length; i++) {
-				var id = this[i][0];
-				if(typeof id === "number")
-					alreadyImportedModules[id] = true;
-			}
-			for(i = 0; i < modules.length; i++) {
-				var item = modules[i];
-				// skip already imported module
-				// this implementation is not 100% perfect for weird media query combinations
-				//  when a module is imported multiple times with different media queries.
-				//  I hope this will never occur (Hey this way we have smaller bundles)
-				if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-					if(mediaQuery && !item[2]) {
-						item[2] = mediaQuery;
-					} else if(mediaQuery) {
-						item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-					}
-					list.push(item);
-				}
-			}
-		};
-		return list;
-	};
-
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"isNotPNG\", function() { return isNotPNG; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"isNotAPNG\", function() { return isNotAPNG; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return parseAPNG; });\n/* harmony import */ var _crc32__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./crc32 */ \"./src/library/crc32.js\");\n/* harmony import */ var _structs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./structs */ \"./src/library/structs.js\");\n\n\nvar errNotPNG = new Error('Not a PNG');\nvar errNotAPNG = new Error('Not an animated PNG');\nfunction isNotPNG(err) {\n  return err === errNotPNG;\n}\nfunction isNotAPNG(err) {\n  return err === errNotAPNG;\n} // '\\x89PNG\\x0d\\x0a\\x1a\\x0a'\n\nvar PNGSignature = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);\n/**\n * Parse APNG data\n * @param {ArrayBuffer} buffer\n * @return {APNG|Error}\n */\n\nfunction parseAPNG(buffer) {\n  var bytes = new Uint8Array(buffer);\n\n  if (Array.prototype.some.call(PNGSignature, function (b, i) {\n    return b !== bytes[i];\n  })) {\n    return errNotPNG;\n  } // fast animation test\n\n\n  var isAnimated = false;\n  eachChunk(bytes, function (type) {\n    return !(isAnimated = type === 'acTL');\n  });\n\n  if (!isAnimated) {\n    return errNotAPNG;\n  }\n\n  var preDataParts = [],\n      postDataParts = [];\n  var headerDataBytes = null,\n      frame = null,\n      frameNumber = 0,\n      apng = new _structs__WEBPACK_IMPORTED_MODULE_1__[\"APNG\"]();\n  eachChunk(bytes, function (type, bytes, off, length) {\n    var dv = new DataView(bytes.buffer);\n\n    switch (type) {\n      case 'IHDR':\n        headerDataBytes = bytes.subarray(off + 8, off + 8 + length);\n        apng.width = dv.getUint32(off + 8);\n        apng.height = dv.getUint32(off + 12);\n        break;\n\n      case 'acTL':\n        apng.numPlays = dv.getUint32(off + 8 + 4);\n        break;\n\n      case 'fcTL':\n        if (frame) {\n          apng.frames.push(frame);\n          frameNumber++;\n        }\n\n        frame = new _structs__WEBPACK_IMPORTED_MODULE_1__[\"Frame\"]();\n        frame.width = dv.getUint32(off + 8 + 4);\n        frame.height = dv.getUint32(off + 8 + 8);\n        frame.left = dv.getUint32(off + 8 + 12);\n        frame.top = dv.getUint32(off + 8 + 16);\n        var delayN = dv.getUint16(off + 8 + 20);\n        var delayD = dv.getUint16(off + 8 + 22);\n\n        if (delayD === 0) {\n          delayD = 100;\n        }\n\n        frame.delay = 1000 * delayN / delayD; // https://bugzilla.mozilla.org/show_bug.cgi?id=125137\n        // https://bugzilla.mozilla.org/show_bug.cgi?id=139677\n        // https://bugzilla.mozilla.org/show_bug.cgi?id=207059\n\n        if (frame.delay <= 10) {\n          frame.delay = 100;\n        }\n\n        apng.playTime += frame.delay;\n        frame.disposeOp = dv.getUint8(off + 8 + 24);\n        frame.blendOp = dv.getUint8(off + 8 + 25);\n        frame.dataParts = [];\n\n        if (frameNumber === 0 && frame.disposeOp === 2) {\n          frame.disposeOp = 1;\n        }\n\n        break;\n\n      case 'fdAT':\n        if (frame) {\n          frame.dataParts.push(bytes.subarray(off + 8 + 4, off + 8 + length));\n        }\n\n        break;\n\n      case 'IDAT':\n        if (frame) {\n          frame.dataParts.push(bytes.subarray(off + 8, off + 8 + length));\n        }\n\n        break;\n\n      case 'IEND':\n        postDataParts.push(subBuffer(bytes, off, 12 + length));\n        break;\n\n      default:\n        preDataParts.push(subBuffer(bytes, off, 12 + length));\n    }\n  });\n\n  if (frame) {\n    apng.frames.push(frame);\n  }\n\n  if (apng.frames.length == 0) {\n    return errNotAPNG;\n  }\n\n  var preBlob = new Blob(preDataParts),\n      postBlob = new Blob(postDataParts);\n  apng.frames.forEach(function (frame) {\n    var bb = [];\n    bb.push(PNGSignature);\n    headerDataBytes.set(makeDWordArray(frame.width), 0);\n    headerDataBytes.set(makeDWordArray(frame.height), 4);\n    bb.push(makeChunkBytes('IHDR', headerDataBytes));\n    bb.push(preBlob);\n    frame.dataParts.forEach(function (p) {\n      return bb.push(makeChunkBytes('IDAT', p));\n    });\n    bb.push(postBlob);\n    frame.imageData = new Blob(bb, {\n      type: 'image/png'\n    });\n    delete frame.dataParts;\n    bb = null;\n  });\n  return apng;\n}\n/**\n * @param {Uint8Array} bytes\n * @param {function(string, Uint8Array, int, int): boolean} callback\n */\n\nfunction eachChunk(bytes, callback) {\n  var dv = new DataView(bytes.buffer);\n  var off = 8,\n      type,\n      length,\n      res;\n\n  do {\n    length = dv.getUint32(off);\n    type = readString(bytes, off + 4, 4);\n    res = callback(type, bytes, off, length);\n    off += 12 + length;\n  } while (res !== false && type != 'IEND' && off < bytes.length);\n}\n/**\n *\n * @param {Uint8Array} bytes\n * @param {number} off\n * @param {number} length\n * @return {string}\n */\n\n\nfunction readString(bytes, off, length) {\n  var chars = Array.prototype.slice.call(bytes.subarray(off, off + length));\n  return String.fromCharCode.apply(String, chars);\n}\n/**\n *\n * @param {string} x\n * @return {Uint8Array}\n */\n\n\nfunction makeStringArray(x) {\n  var res = new Uint8Array(x.length);\n\n  for (var i = 0; i < x.length; i++) {\n    res[i] = x.charCodeAt(i);\n  }\n\n  return res;\n}\n/**\n * @param {Uint8Array} bytes\n * @param {int} start\n * @param {int} length\n * @return {Uint8Array}\n */\n\n\nfunction subBuffer(bytes, start, length) {\n  var a = new Uint8Array(length);\n  a.set(bytes.subarray(start, start + length));\n  return a;\n}\n/**\n * @param {string} type\n * @param {Uint8Array} dataBytes\n * @return {Uint8Array}\n */\n\n\nvar makeChunkBytes = function makeChunkBytes(type, dataBytes) {\n  var crcLen = type.length + dataBytes.length;\n  var bytes = new Uint8Array(crcLen + 8);\n  var dv = new DataView(bytes.buffer);\n  dv.setUint32(0, dataBytes.length);\n  bytes.set(makeStringArray(type), 4);\n  bytes.set(dataBytes, 8);\n  var crc = Object(_crc32__WEBPACK_IMPORTED_MODULE_0__[\"default\"])(bytes, 4, crcLen);\n  dv.setUint32(crcLen + 4, crc);\n  return bytes;\n};\n\nvar makeDWordArray = function makeDWordArray(x) {\n  return new Uint8Array([x >>> 24 & 0xff, x >>> 16 & 0xff, x >>> 8 & 0xff, x & 0xff]);\n};\n\n//# sourceURL=webpack:///./src/library/parser.js?");
 
 /***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
 
-	/*
-		MIT License http://www.opensource.org/licenses/mit-license.php
-		Author Tobias Koppers @sokra
-	*/
-	var stylesInDom = {},
-		memoize = function(fn) {
-			var memo;
-			return function () {
-				if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-				return memo;
-			};
-		},
-		isOldIE = memoize(function() {
-			return /msie [6-9]\b/.test(self.navigator.userAgent.toLowerCase());
-		}),
-		getHeadElement = memoize(function () {
-			return document.head || document.getElementsByTagName("head")[0];
-		}),
-		singletonElement = null,
-		singletonCounter = 0,
-		styleElementsInsertedAtTop = [];
+/***/ "./src/library/player.js":
+/*!*******************************!*\
+  !*** ./src/library/player.js ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-	module.exports = function(list, options) {
-		if(false) {
-			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-		}
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Player; });\n/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! events */ \"./node_modules/events/events.js\");\n/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(events__WEBPACK_IMPORTED_MODULE_0__);\nfunction _typeof(obj) { \"@babel/helpers - typeof\"; if (typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; }; } return _typeof(obj); }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nfunction _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === \"object\" || typeof call === \"function\")) { return call; } return _assertThisInitialized(self); }\n\nfunction _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }\n\nfunction _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return self; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function\"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }\n\nfunction _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\n\n\nvar Player = /*#__PURE__*/function (_EventEmitter) {\n  _inherits(Player, _EventEmitter);\n\n  /** @type {CanvasRenderingContext2D} */\n\n  /** @type {number} */\n\n  /** @type {APNG} */\n\n  /** @type {Frame} */\n\n  /** @type {ImageData} */\n\n  /** @type {number} */\n\n  /** @type {boolean} */\n\n  /** @type {boolean} */\n\n  /** @type {number} */\n\n  /**\n   * @param {APNG} apng\n   * @param {CanvasRenderingContext2D} context\n   * @param {boolean} autoPlay\n   */\n  function Player(apng, context, autoPlay) {\n    var _this;\n\n    _classCallCheck(this, Player);\n\n    _this = _possibleConstructorReturn(this, _getPrototypeOf(Player).call(this));\n\n    _defineProperty(_assertThisInitialized(_this), \"context\", void 0);\n\n    _defineProperty(_assertThisInitialized(_this), \"playbackRate\", 1.0);\n\n    _defineProperty(_assertThisInitialized(_this), \"_apng\", void 0);\n\n    _defineProperty(_assertThisInitialized(_this), \"_prevFrame\", void 0);\n\n    _defineProperty(_assertThisInitialized(_this), \"_prevFrameData\", void 0);\n\n    _defineProperty(_assertThisInitialized(_this), \"_currentFrameNumber\", 0);\n\n    _defineProperty(_assertThisInitialized(_this), \"_ended\", false);\n\n    _defineProperty(_assertThisInitialized(_this), \"_paused\", true);\n\n    _defineProperty(_assertThisInitialized(_this), \"_numPlays\", 0);\n\n    _this._apng = apng;\n    _this.context = context;\n\n    _this.stop();\n\n    if (autoPlay) {\n      _this.play();\n    }\n\n    return _this;\n  }\n  /**\n   *\n   * @return {number}\n   */\n\n\n  _createClass(Player, [{\n    key: \"renderNextFrame\",\n    value: function renderNextFrame() {\n      this._currentFrameNumber = (this._currentFrameNumber + 1) % this._apng.frames.length;\n\n      if (this._currentFrameNumber === this._apng.frames.length - 1) {\n        this._numPlays++;\n\n        if (this._apng.numPlays !== 0 && this._numPlays >= this._apng.numPlays) {\n          this._ended = true;\n          this._paused = true;\n        }\n      }\n\n      if (this._prevFrame && this._prevFrame.disposeOp == 1) {\n        this.context.clearRect(this._prevFrame.left, this._prevFrame.top, this._prevFrame.width, this._prevFrame.height);\n      } else if (this._prevFrame && this._prevFrame.disposeOp == 2) {\n        this.context.putImageData(this._prevFrameData, this._prevFrame.left, this._prevFrame.top);\n      }\n\n      var frame = this.currentFrame;\n      this._prevFrame = frame;\n      this._prevFrameData = null;\n\n      if (frame.disposeOp == 2) {\n        this._prevFrameData = this.context.getImageData(frame.left, frame.top, frame.width, frame.height);\n      }\n\n      if (frame.blendOp == 0) {\n        this.context.clearRect(frame.left, frame.top, frame.width, frame.height);\n      }\n\n      this.context.drawImage(frame.imageElement, frame.left, frame.top);\n      this.emit('frame', this._currentFrameNumber);\n\n      if (this._ended) {\n        this.emit('end');\n      }\n    } // playback\n\n  }, {\n    key: \"play\",\n    value: function play() {\n      var _this2 = this;\n\n      this.emit('play');\n\n      if (this._ended) {\n        this.stop();\n      }\n\n      this._paused = false;\n      var nextRenderTime = performance.now() + this.currentFrame.delay / this.playbackRate;\n\n      var tick = function tick(now) {\n        if (_this2._ended || _this2._paused) {\n          return;\n        }\n\n        if (now >= nextRenderTime) {\n          while (now - nextRenderTime >= _this2._apng.playTime / _this2.playbackRate) {\n            nextRenderTime += _this2._apng.playTime / _this2.playbackRate;\n            _this2._numPlays++;\n          }\n\n          do {\n            _this2.renderNextFrame();\n\n            nextRenderTime += _this2.currentFrame.delay / _this2.playbackRate;\n          } while (!_this2._ended && now > nextRenderTime);\n        }\n\n        requestAnimationFrame(tick);\n      };\n\n      requestAnimationFrame(tick);\n    }\n  }, {\n    key: \"pause\",\n    value: function pause() {\n      if (!this._paused) {\n        this.emit('pause');\n        this._paused = true;\n      }\n    }\n  }, {\n    key: \"stop\",\n    value: function stop() {\n      this.emit('stop');\n      this._numPlays = 0;\n      this._ended = false;\n      this._paused = true; // render first frame\n\n      this._currentFrameNumber = -1;\n      this.context.clearRect(0, 0, this._apng.width, this._apng.height);\n      this.renderNextFrame();\n    }\n  }, {\n    key: \"currentFrameNumber\",\n    get: function get() {\n      return this._currentFrameNumber;\n    }\n    /**\n     *\n     * @return {Frame}\n     */\n\n  }, {\n    key: \"currentFrame\",\n    get: function get() {\n      return this._apng.frames[this._currentFrameNumber];\n    }\n  }, {\n    key: \"paused\",\n    get: function get() {\n      return this._paused;\n    }\n  }, {\n    key: \"ended\",\n    get: function get() {\n      return this._ended;\n    }\n  }]);\n\n  return Player;\n}(events__WEBPACK_IMPORTED_MODULE_0___default.a);\n\n\n\n//# sourceURL=webpack:///./src/library/player.js?");
 
-		options = options || {};
-		// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-		// tags it will allow on a page
-		if (typeof options.singleton === "undefined") options.singleton = isOldIE();
+/***/ }),
 
-		// By default, add <style> tags to the bottom of <head>.
-		if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
+/***/ "./src/library/structs.js":
+/*!********************************!*\
+  !*** ./src/library/structs.js ***!
+  \********************************/
+/*! exports provided: APNG, Frame */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-		var styles = listToStyles(list);
-		addStylesToDom(styles, options);
-
-		return function update(newList) {
-			var mayRemove = [];
-			for(var i = 0; i < styles.length; i++) {
-				var item = styles[i];
-				var domStyle = stylesInDom[item.id];
-				domStyle.refs--;
-				mayRemove.push(domStyle);
-			}
-			if(newList) {
-				var newStyles = listToStyles(newList);
-				addStylesToDom(newStyles, options);
-			}
-			for(var i = 0; i < mayRemove.length; i++) {
-				var domStyle = mayRemove[i];
-				if(domStyle.refs === 0) {
-					for(var j = 0; j < domStyle.parts.length; j++)
-						domStyle.parts[j]();
-					delete stylesInDom[domStyle.id];
-				}
-			}
-		};
-	}
-
-	function addStylesToDom(styles, options) {
-		for(var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-			if(domStyle) {
-				domStyle.refs++;
-				for(var j = 0; j < domStyle.parts.length; j++) {
-					domStyle.parts[j](item.parts[j]);
-				}
-				for(; j < item.parts.length; j++) {
-					domStyle.parts.push(addStyle(item.parts[j], options));
-				}
-			} else {
-				var parts = [];
-				for(var j = 0; j < item.parts.length; j++) {
-					parts.push(addStyle(item.parts[j], options));
-				}
-				stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-			}
-		}
-	}
-
-	function listToStyles(list) {
-		var styles = [];
-		var newStyles = {};
-		for(var i = 0; i < list.length; i++) {
-			var item = list[i];
-			var id = item[0];
-			var css = item[1];
-			var media = item[2];
-			var sourceMap = item[3];
-			var part = {css: css, media: media, sourceMap: sourceMap};
-			if(!newStyles[id])
-				styles.push(newStyles[id] = {id: id, parts: [part]});
-			else
-				newStyles[id].parts.push(part);
-		}
-		return styles;
-	}
-
-	function insertStyleElement(options, styleElement) {
-		var head = getHeadElement();
-		var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
-		if (options.insertAt === "top") {
-			if(!lastStyleElementInsertedAtTop) {
-				head.insertBefore(styleElement, head.firstChild);
-			} else if(lastStyleElementInsertedAtTop.nextSibling) {
-				head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
-			} else {
-				head.appendChild(styleElement);
-			}
-			styleElementsInsertedAtTop.push(styleElement);
-		} else if (options.insertAt === "bottom") {
-			head.appendChild(styleElement);
-		} else {
-			throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
-		}
-	}
-
-	function removeStyleElement(styleElement) {
-		styleElement.parentNode.removeChild(styleElement);
-		var idx = styleElementsInsertedAtTop.indexOf(styleElement);
-		if(idx >= 0) {
-			styleElementsInsertedAtTop.splice(idx, 1);
-		}
-	}
-
-	function createStyleElement(options) {
-		var styleElement = document.createElement("style");
-		styleElement.type = "text/css";
-		insertStyleElement(options, styleElement);
-		return styleElement;
-	}
-
-	function createLinkElement(options) {
-		var linkElement = document.createElement("link");
-		linkElement.rel = "stylesheet";
-		insertStyleElement(options, linkElement);
-		return linkElement;
-	}
-
-	function addStyle(obj, options) {
-		var styleElement, update, remove;
-
-		if (options.singleton) {
-			var styleIndex = singletonCounter++;
-			styleElement = singletonElement || (singletonElement = createStyleElement(options));
-			update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
-			remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
-		} else if(obj.sourceMap &&
-			typeof URL === "function" &&
-			typeof URL.createObjectURL === "function" &&
-			typeof URL.revokeObjectURL === "function" &&
-			typeof Blob === "function" &&
-			typeof btoa === "function") {
-			styleElement = createLinkElement(options);
-			update = updateLink.bind(null, styleElement);
-			remove = function() {
-				removeStyleElement(styleElement);
-				if(styleElement.href)
-					URL.revokeObjectURL(styleElement.href);
-			};
-		} else {
-			styleElement = createStyleElement(options);
-			update = applyToTag.bind(null, styleElement);
-			remove = function() {
-				removeStyleElement(styleElement);
-			};
-		}
-
-		update(obj);
-
-		return function updateStyle(newObj) {
-			if(newObj) {
-				if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
-					return;
-				update(obj = newObj);
-			} else {
-				remove();
-			}
-		};
-	}
-
-	var replaceText = (function () {
-		var textStore = [];
-
-		return function (index, replacement) {
-			textStore[index] = replacement;
-			return textStore.filter(Boolean).join('\n');
-		};
-	})();
-
-	function applyToSingletonTag(styleElement, index, remove, obj) {
-		var css = remove ? "" : obj.css;
-
-		if (styleElement.styleSheet) {
-			styleElement.styleSheet.cssText = replaceText(index, css);
-		} else {
-			var cssNode = document.createTextNode(css);
-			var childNodes = styleElement.childNodes;
-			if (childNodes[index]) styleElement.removeChild(childNodes[index]);
-			if (childNodes.length) {
-				styleElement.insertBefore(cssNode, childNodes[index]);
-			} else {
-				styleElement.appendChild(cssNode);
-			}
-		}
-	}
-
-	function applyToTag(styleElement, obj) {
-		var css = obj.css;
-		var media = obj.media;
-
-		if(media) {
-			styleElement.setAttribute("media", media)
-		}
-
-		if(styleElement.styleSheet) {
-			styleElement.styleSheet.cssText = css;
-		} else {
-			while(styleElement.firstChild) {
-				styleElement.removeChild(styleElement.firstChild);
-			}
-			styleElement.appendChild(document.createTextNode(css));
-		}
-	}
-
-	function updateLink(linkElement, obj) {
-		var css = obj.css;
-		var sourceMap = obj.sourceMap;
-
-		if(sourceMap) {
-			// http://stackoverflow.com/a/26603875
-			css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-		}
-
-		var blob = new Blob([css], { type: "text/css" });
-
-		var oldSrc = linkElement.href;
-
-		linkElement.href = URL.createObjectURL(blob);
-
-		if(oldSrc)
-			URL.revokeObjectURL(oldSrc);
-	}
-
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"APNG\", function() { return APNG; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"Frame\", function() { return Frame; });\n/* harmony import */ var _player__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./player */ \"./src/library/player.js\");\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\n\n/**\n * @property {number} currFrameNumber\n * @property {Frame} currFrame\n * @property {boolean} paused\n * @property {boolean} ended\n */\n\nvar APNG = /*#__PURE__*/function () {\n  function APNG() {\n    _classCallCheck(this, APNG);\n\n    _defineProperty(this, \"width\", 0);\n\n    _defineProperty(this, \"height\", 0);\n\n    _defineProperty(this, \"numPlays\", 0);\n\n    _defineProperty(this, \"playTime\", 0);\n\n    _defineProperty(this, \"frames\", []);\n  }\n\n  _createClass(APNG, [{\n    key: \"createImages\",\n\n    /**\n     *\n     * @return {Promise.<*>}\n     */\n    value: function createImages() {\n      return Promise.all(this.frames.map(function (f) {\n        return f.createImage();\n      }));\n    }\n    /**\n     *\n     * @param {CanvasRenderingContext2D} context\n     * @param {boolean} autoPlay\n     * @return {Promise.<Player>}\n     */\n\n  }, {\n    key: \"getPlayer\",\n    value: function getPlayer(context) {\n      var _this = this;\n\n      var autoPlay = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;\n      return this.createImages().then(function () {\n        return new _player__WEBPACK_IMPORTED_MODULE_0__[\"default\"](_this, context, autoPlay);\n      });\n    }\n  }]);\n\n  return APNG;\n}();\nvar Frame = /*#__PURE__*/function () {\n  function Frame() {\n    _classCallCheck(this, Frame);\n\n    _defineProperty(this, \"left\", 0);\n\n    _defineProperty(this, \"top\", 0);\n\n    _defineProperty(this, \"width\", 0);\n\n    _defineProperty(this, \"height\", 0);\n\n    _defineProperty(this, \"delay\", 0);\n\n    _defineProperty(this, \"disposeOp\", 0);\n\n    _defineProperty(this, \"blendOp\", 0);\n\n    _defineProperty(this, \"imageData\", null);\n\n    _defineProperty(this, \"imageElement\", null);\n  }\n\n  _createClass(Frame, [{\n    key: \"createImage\",\n    value: function createImage() {\n      var _this2 = this;\n\n      if (this.imageElement) {\n        return Promise.resolve();\n      }\n\n      return new Promise(function (resolve, reject) {\n        var url = URL.createObjectURL(_this2.imageData);\n        _this2.imageElement = document.createElement('img');\n\n        _this2.imageElement.onload = function () {\n          URL.revokeObjectURL(url);\n          resolve();\n        };\n\n        _this2.imageElement.onerror = function () {\n          URL.revokeObjectURL(url);\n          _this2.imageElement = null;\n          reject(new Error('Image creation error'));\n        };\n\n        _this2.imageElement.src = url;\n      });\n    }\n  }]);\n\n  return Frame;\n}();\n\n//# sourceURL=webpack:///./src/library/structs.js?");
 
 /***/ })
-/******/ ]);
+
+/******/ });

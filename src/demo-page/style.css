@@ -1,30 +1,42 @@
 .apng-info,
 .apng-frames {
-    max-height: 600px;
-    overflow:   auto;
+  max-height: 600px;
+  overflow: auto;
 }
 
 .apng-frames > div {
-    float:            left;
-    margin:           1px 1px 8px 8px;
-    box-shadow:       0 0 0 1px;
-    position:         relative;
-    background:       linear-gradient(45deg, #fff 25%, transparent 26%, transparent 75%, #fff 76%),
-                      linear-gradient(-45deg, #fff 25%, transparent 26%, transparent 75%, #fff 76%);
-    background-color: #eee;
-    background-size:  20px 20px;
+  float: left;
+  margin: 1px 1px 8px 8px;
+  box-shadow: 0 0 0 1px;
+  position: relative;
+  background: linear-gradient(
+      45deg,
+      #fff 25%,
+      transparent 26%,
+      transparent 75%,
+      #fff 76%
+    ),
+    linear-gradient(
+      -45deg,
+      #fff 25%,
+      transparent 26%,
+      transparent 75%,
+      #fff 76%
+    );
+  background-color: #eee;
+  background-size: 20px 20px;
 }
 
 .apng-frames > div > img {
-    position:   absolute;
-    box-shadow: 0 0 0 1px rgba(255, 0, 0, 0.75);
+  position: absolute;
+  box-shadow: 0 0 0 1px rgba(255, 0, 0, 0.75);
 }
 
 #playback-rate {
-    width:   12em;
-    display: inline-block;
+  width: 12em;
+  display: inline-block;
 }
 
 .apng-log {
-    height: 10em;
+  height: 10em;
 }

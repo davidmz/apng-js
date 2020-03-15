@@ -1,7 +1,7 @@
 .*
 !.npmignore
 !.gitignore
-!.babelrc
+!.babelrc.json
 node_modules
 src/
 docs/
