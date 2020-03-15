@@ -14,6 +14,14 @@
     "url": "https://github.com/davidmz/apng-js.git"
   },
   "main": "./lib/index.umd.js",
+  "types": "./types/library/parser.d.ts",
+  "files": [
+    "types/library",
+    "lib",
+    "src/library",
+    "LICENSE.txt",
+    "README.md"
+  ],
   "exports": {
     ".": {
       "require": "./lib/index.cjs",
@@ -21,9 +29,9 @@
     }
   },
   "scripts": {
-    "lint": "eslint src",
-    "build": "rollup --config ./rollup.config.mjs && webpack",
-    "prepublish": "yarn build"
+    "lint": "eslint 'src/**/*.ts'",
+    "build": "tsc && rollup --config ./rollup.config.mjs && webpack",
+    "prepublish": "yarn lint && yarn build"
   },
   "dependencies": {},
   "devDependencies": {
@@ -32,6 +40,7 @@
     "@babel/preset-env": "^7.8.7",
     "@babel/preset-typescript": "^7.8.3",
     "@rollup/plugin-commonjs": "^11.0.2",
+    "@rollup/plugin-node-resolve": "^7.1.1",
     "@types/node": "^13.9.1",
     "@types/webpack": "^4.41.7",
     "@typescript-eslint/eslint-plugin": "^2.23.0",
@@ -44,6 +53,7 @@
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-prettier": "^3.1.2",
     "fork-ts-checker-webpack-plugin": "^4.1.0",
     "prettier": "^1.19.1",
     "rollup": "^2.0.6",

@@ -2,9 +2,12 @@
 !.npmignore
 !.gitignore
 !.babelrc.json
+!.babelrc.modern.json
 !.editorconfig
 !.prettierrc.json
 !.prettierignore
 !.eslintrc.json
+!.eslintignore
 node_modules
 lib/
+types/

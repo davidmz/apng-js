@@ -6,7 +6,7 @@ const path = require('path');
  */
 const webpackConfigs = {
   mode: 'development',
-  entry: path.join(__dirname, 'src', 'demo-page', 'index.js'),
+  entry: path.join(__dirname, 'src', 'demo-page', 'index.ts'),
   output: {
     path: path.join(__dirname, 'docs'),
     filename: 'index.js',

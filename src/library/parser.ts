@@ -4,10 +4,10 @@ import { APNG, Frame } from './structs';
 const errNotPNG = new Error('Not a PNG');
 const errNotAPNG = new Error('Not an animated PNG');
 
-export function isNotPNG(err) {
+export function isNotPNG(err: unknown) {
   return err === errNotPNG;
 }
-export function isNotAPNG(err) {
+export function isNotAPNG(err: unknown) {
   return err === errNotAPNG;
 }
 
@@ -25,10 +25,9 @@ const PNGSignature = new Uint8Array([
 
 /**
  * Parse APNG data
- * @param {ArrayBuffer} buffer
- * @return {APNG|Error}
+ *
  */
-export default function parseAPNG(buffer) {
+export default function parseAPNG(buffer: ArrayBuffer) {
   const bytes = new Uint8Array(buffer);
 
   if (Array.prototype.some.call(PNGSignature, (b, i) => b !== bytes[i])) {
@@ -37,18 +36,20 @@ export default function parseAPNG(buffer) {
 
   // fast animation test
   let isAnimated = false;
+  // eslint-disable-next-line no-return-assign
   eachChunk(bytes, type => !(isAnimated = type === 'acTL'));
   if (!isAnimated) {
     return errNotAPNG;
   }
 
-  const preDataParts = [],
-    postDataParts = [];
-  let headerDataBytes = null,
-    frame = null,
-    frameNumber = 0,
-    apng = new APNG();
+  const preDataParts: Array<Uint8Array> = [];
+  const postDataParts: Array<Uint8Array> = [];
+  let headerDataBytes: Uint8Array | null = null;
+  let frame: Frame | null = null;
+  let frameNumber = 0;
+  const apng = new APNG();
 
+  // eslint-disable-next-line no-shadow
   eachChunk(bytes, (type, bytes, off, length) => {
     const dv = new DataView(bytes.buffer);
     switch (type) {
@@ -70,8 +71,8 @@ export default function parseAPNG(buffer) {
         frame.height = dv.getUint32(off + 8 + 8);
         frame.left = dv.getUint32(off + 8 + 12);
         frame.top = dv.getUint32(off + 8 + 16);
-        var delayN = dv.getUint16(off + 8 + 20);
-        var delayD = dv.getUint16(off + 8 + 22);
+        const delayN = dv.getUint16(off + 8 + 20);
+        let delayD = dv.getUint16(off + 8 + 22);
         if (delayD === 0) {
           delayD = 100;
         }
@@ -92,12 +93,12 @@ export default function parseAPNG(buffer) {
         break;
       case 'fdAT':
         if (frame) {
-          frame.dataParts.push(bytes.subarray(off + 8 + 4, off + 8 + length));
+          frame.dataParts!.push(bytes.subarray(off + 8 + 4, off + 8 + length));
         }
         break;
       case 'IDAT':
         if (frame) {
-          frame.dataParts.push(bytes.subarray(off + 8, off + 8 + length));
+          frame.dataParts!.push(bytes.subarray(off + 8, off + 8 + length));
         }
         break;
       case 'IEND':
@@ -106,72 +107,71 @@ export default function parseAPNG(buffer) {
       default:
         preDataParts.push(subBuffer(bytes, off, 12 + length));
     }
+    return undefined;
   });
 
   if (frame) {
     apng.frames.push(frame);
   }
 
-  if (apng.frames.length == 0) {
+  if (apng.frames.length === 0) {
     return errNotAPNG;
   }
 
-  const preBlob = new Blob(preDataParts),
-    postBlob = new Blob(postDataParts);
+  const preBlob = new Blob(preDataParts);
+  const postBlob = new Blob(postDataParts);
 
+  // eslint-disable-next-line no-shadow
   apng.frames.forEach(frame => {
-    var bb = [];
+    const bb: Array<Blob | Uint8Array> = [];
     bb.push(PNGSignature);
-    headerDataBytes.set(makeDWordArray(frame.width), 0);
-    headerDataBytes.set(makeDWordArray(frame.height), 4);
-    bb.push(makeChunkBytes('IHDR', headerDataBytes));
+
+    headerDataBytes!.set(makeDWordArray(frame.width), 0);
+    headerDataBytes!.set(makeDWordArray(frame.height), 4);
+    bb.push(makeChunkBytes('IHDR', headerDataBytes!));
     bb.push(preBlob);
-    frame.dataParts.forEach(p => bb.push(makeChunkBytes('IDAT', p)));
+    frame.dataParts!.forEach(p => bb.push(makeChunkBytes('IDAT', p)));
     bb.push(postBlob);
+    // eslint-disable-next-line no-param-reassign
     frame.imageData = new Blob(bb, { type: 'image/png' });
+    // eslint-disable-next-line no-param-reassign
     delete frame.dataParts;
-    bb = null;
   });
 
   return apng;
 }
 
-/**
- * @param {Uint8Array} bytes
- * @param {function(string, Uint8Array, int, int): boolean} callback
- */
-function eachChunk(bytes, callback) {
+function eachChunk(
+  bytes: Uint8Array,
+  callback: (
+    type: string,
+    bytes: Uint8Array,
+    off: number,
+    length: number,
+  ) => boolean | undefined,
+) {
   const dv = new DataView(bytes.buffer);
-  let off = 8,
-    type,
-    length,
-    res;
+  let off = 8;
+  let type: string;
+  let length: number;
+  let res: boolean | undefined;
   do {
     length = dv.getUint32(off);
+
     type = readString(bytes, off + 4, 4);
     res = callback(type, bytes, off, length);
     off += 12 + length;
-  } while (res !== false && type != 'IEND' && off < bytes.length);
+  } while (res !== false && type !== 'IEND' && off < bytes.length);
 }
 
-/**
- *
- * @param {Uint8Array} bytes
- * @param {number} off
- * @param {number} length
- * @return {string}
- */
-function readString(bytes, off, length) {
-  const chars = Array.prototype.slice.call(bytes.subarray(off, off + length));
-  return String.fromCharCode.apply(String, chars);
+function readString(bytes: Uint8Array, off: number, length: number) {
+  const chars: number[] = Array.prototype.slice.call(
+    bytes.subarray(off, off + length),
+  );
+  return String.fromCharCode(...chars);
 }
 
-/**
- *
- * @param {string} x
- * @return {Uint8Array}
- */
-function makeStringArray(x) {
+function makeStringArray(x: string) {
   const res = new Uint8Array(x.length);
   for (let i = 0; i < x.length; i++) {
     res[i] = x.charCodeAt(i);
@@ -179,24 +179,13 @@ function makeStringArray(x) {
   return res;
 }
 
-/**
- * @param {Uint8Array} bytes
- * @param {int} start
- * @param {int} length
- * @return {Uint8Array}
- */
-function subBuffer(bytes, start, length) {
+function subBuffer(bytes: Uint8Array, start: number, length: number) {
   const a = new Uint8Array(length);
   a.set(bytes.subarray(start, start + length));
   return a;
 }
 
-/**
- * @param {string} type
- * @param {Uint8Array} dataBytes
- * @return {Uint8Array}
- */
-var makeChunkBytes = function(type, dataBytes) {
+function makeChunkBytes(type: string, dataBytes: Uint8Array) {
   const crcLen = type.length + dataBytes.length;
   const bytes = new Uint8Array(crcLen + 8);
   const dv = new DataView(bytes.buffer);
@@ -204,16 +193,22 @@ var makeChunkBytes = function(type, dataBytes) {
   dv.setUint32(0, dataBytes.length);
   bytes.set(makeStringArray(type), 4);
   bytes.set(dataBytes, 8);
-  var crc = crc32(bytes, 4, crcLen);
+  const crc = crc32(bytes, 4, crcLen);
   dv.setUint32(crcLen + 4, crc);
   return bytes;
-};
+}
 
-var makeDWordArray = function(x) {
+function makeDWordArray(x: number) {
   return new Uint8Array([
     (x >>> 24) & 0xff,
     (x >>> 16) & 0xff,
     (x >>> 8) & 0xff,
     x & 0xff,
   ]);
-};
+}
+
+// FIXME: use this line when prettier and babel support ts 3.8
+// export type { APNG, Frame };
+type _APNG = APNG;
+type _Frame = Frame;
+export { _APNG as APNG, _Frame as Frame };

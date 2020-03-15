@@ -1,33 +1,30 @@
-import EventEmitter from 'events';
+import { EventEmitter } from 'events';
+import { APNG, Frame } from './structs';
 
 export default class Player extends EventEmitter {
-  /** @type {CanvasRenderingContext2D} */
-  context;
-  /** @type {number} */
-  playbackRate = 1.0;
+  public context: CanvasRenderingContext2D;
 
-  /** @type {APNG} */
-  _apng;
-  /** @type {Frame} */
-  _prevFrame;
-  /** @type {ImageData} */
-  _prevFrameData;
-  /** @type {number} */
-  _currentFrameNumber = 0;
+  public playbackRate = 1.0;
 
-  /** @type {boolean} */
-  _ended = false;
-  /** @type {boolean} */
-  _paused = true;
-  /** @type {number} */
-  _numPlays = 0;
+  private _apng: APNG;
 
-  /**
-   * @param {APNG} apng
-   * @param {CanvasRenderingContext2D} context
-   * @param {boolean} autoPlay
-   */
-  constructor(apng, context, autoPlay) {
+  private _prevFrame?: Frame;
+
+  private _prevFrameData: ImageData | null = null;
+
+  private _currentFrameNumber = 0;
+
+  private _ended = false;
+
+  private _paused = true;
+
+  private _numPlays = 0;
+
+  public constructor(
+    apng: APNG,
+    context: CanvasRenderingContext2D,
+    autoPlay: boolean,
+  ) {
     super();
     this._apng = apng;
     this.context = context;
@@ -37,23 +34,15 @@ export default class Player extends EventEmitter {
     }
   }
 
-  /**
-   *
-   * @return {number}
-   */
-  get currentFrameNumber() {
+  public get currentFrameNumber() {
     return this._currentFrameNumber;
   }
 
-  /**
-   *
-   * @return {Frame}
-   */
-  get currentFrame() {
+  public get currentFrame() {
     return this._apng.frames[this._currentFrameNumber];
   }
 
-  renderNextFrame() {
+  public renderNextFrame() {
     this._currentFrameNumber =
       (this._currentFrameNumber + 1) % this._apng.frames.length;
     if (this._currentFrameNumber === this._apng.frames.length - 1) {
@@ -64,16 +53,16 @@ export default class Player extends EventEmitter {
       }
     }
 
-    if (this._prevFrame && this._prevFrame.disposeOp == 1) {
+    if (this._prevFrame && this._prevFrame.disposeOp === 1) {
       this.context.clearRect(
         this._prevFrame.left,
         this._prevFrame.top,
         this._prevFrame.width,
         this._prevFrame.height,
       );
-    } else if (this._prevFrame && this._prevFrame.disposeOp == 2) {
+    } else if (this._prevFrame && this._prevFrame.disposeOp === 2) {
       this.context.putImageData(
-        this._prevFrameData,
+        this._prevFrameData!,
         this._prevFrame.left,
         this._prevFrame.top,
       );
@@ -82,7 +71,7 @@ export default class Player extends EventEmitter {
     const frame = this.currentFrame;
     this._prevFrame = frame;
     this._prevFrameData = null;
-    if (frame.disposeOp == 2) {
+    if (frame.disposeOp === 2) {
       this._prevFrameData = this.context.getImageData(
         frame.left,
         frame.top,
@@ -90,11 +79,11 @@ export default class Player extends EventEmitter {
         frame.height,
       );
     }
-    if (frame.blendOp == 0) {
+    if (frame.blendOp === 0) {
       this.context.clearRect(frame.left, frame.top, frame.width, frame.height);
     }
 
-    this.context.drawImage(frame.imageElement, frame.left, frame.top);
+    this.context.drawImage(frame.imageElement!, frame.left, frame.top);
 
     this.emit('frame', this._currentFrameNumber);
     if (this._ended) {
@@ -104,15 +93,15 @@ export default class Player extends EventEmitter {
 
   // playback
 
-  get paused() {
+  public get paused() {
     return this._paused;
   }
 
-  get ended() {
+  public get ended() {
     return this._ended;
   }
 
-  play() {
+  public play() {
     this.emit('play');
 
     if (this._ended) {
@@ -122,7 +111,7 @@ export default class Player extends EventEmitter {
 
     let nextRenderTime =
       performance.now() + this.currentFrame.delay / this.playbackRate;
-    const tick = now => {
+    const tick = (now: number) => {
       if (this._ended || this._paused) {
         return;
       }
@@ -144,14 +133,14 @@ export default class Player extends EventEmitter {
     requestAnimationFrame(tick);
   }
 
-  pause() {
+  public pause() {
     if (!this._paused) {
       this.emit('pause');
       this._paused = true;
     }
   }
 
-  stop() {
+  public stop() {
     this.emit('stop');
     this._numPlays = 0;
     this._ended = false;

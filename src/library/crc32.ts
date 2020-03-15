@@ -8,14 +8,11 @@ for (let i = 0; i < 256; i++) {
   table[i] = c;
 }
 
-/**
- *
- * @param {Uint8Array} bytes
- * @param {number} start
- * @param {number} length
- * @return {number}
- */
-export default function(bytes, start = 0, length = bytes.length - start) {
+export default function crc32(
+  bytes: Uint8Array,
+  start = 0,
+  length = bytes.length - start,
+) {
   let crc = -1;
   for (let i = start, l = start + length; i < l; i++) {
     crc = (crc >>> 8) ^ table[(crc ^ bytes[i]) & 0xff];
