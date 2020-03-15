@@ -1,7 +1,56 @@
 {
-    "env": { "es6": true, "browser": true },
-    "parser": "babel-eslint",
-    "extends": [
-        "eslint:recommended"
-    ]
+  "env": { "es6": true, "browser": true, "node": true },
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module"
+  },
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": "error"
+  },
+  "overrides": [
+    {
+      "files": ["*.js", "*.mjs", "*.cjs"],
+      "parser": "babel-eslint",
+      "extends": ["eslint-config-airbnb-base", "prettier"],
+      "rules": {
+        "max-classes-per-file": "off",
+        "no-bitwise": "off",
+        "no-case-declarations": "off",
+        "no-plusplus": "off",
+        "no-underscore-dangle": "off",
+        "import/extensions": "off",
+        "import/no-unresolved": "off"
+      }
+    },
+    {
+      "files": ["*.ts"],
+      "parserOptions": { "project": "./tsconfig.json" },
+      "extends": [
+        "eslint-config-airbnb-base",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "prettier",
+        "prettier/@typescript-eslint"
+      ],
+      "rules": {
+        "max-classes-per-file": "off",
+        "no-bitwise": "off",
+        "no-case-declarations": "off",
+        "no-plusplus": "off",
+        "no-underscore-dangle": "off",
+        "import/extensions": "off",
+        "import/no-unresolved": "off",
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/explicit-member-accessibility": "error",
+        "@typescript-eslint/no-use-before-define": "off",
+        "@typescript-eslint/no-non-null-assertion": "off"
+      }
+    }
+  ]
 }

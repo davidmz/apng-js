@@ -1,0 +1,15 @@
+{
+  "include": ["./src/**/*"],
+  "compilerOptions": {
+    "strict": true,
+    "declaration": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "target": "esnext",
+    "moduleResolution": "node",
+    "lib": ["dom", "esnext"],
+    "outDir": "types",
+    "emitDeclarationOnly": true,
+    "resolveJsonModule": true
+  }
+}
