@@ -1,9 +1,12 @@
 import { EventEmitter } from 'events';
 import { APNG, Frame } from './structs';
 
-export default class Player extends EventEmitter {
+class Player extends EventEmitter {
   public context: CanvasRenderingContext2D;
 
+  /**
+   * animation playback rate
+   */
   public playbackRate = 1.0;
 
   private _apng: APNG;
@@ -34,14 +37,25 @@ export default class Player extends EventEmitter {
     }
   }
 
+  /**
+   * current frame number
+   */
   public get currentFrameNumber() {
     return this._currentFrameNumber;
   }
 
+  /**
+   * current frame
+   */
   public get currentFrame() {
     return this._apng.frames[this._currentFrameNumber];
   }
 
+  /**
+   * move to next frame and render it on context
+   *
+   *  Use this method to manual, frame by frame, rendering.
+   */
   public renderNextFrame() {
     this._currentFrameNumber =
       (this._currentFrameNumber + 1) % this._apng.frames.length;
@@ -93,14 +107,23 @@ export default class Player extends EventEmitter {
 
   // playback
 
+  /**
+   * playback is paused
+   */
   public get paused() {
     return this._paused;
   }
 
+  /**
+   * playback is ended
+   */
   public get ended() {
     return this._ended;
   }
 
+  /**
+   * start or resume playback
+   */
   public play() {
     this.emit('play');
 
@@ -133,6 +156,9 @@ export default class Player extends EventEmitter {
     requestAnimationFrame(tick);
   }
 
+  /**
+   * pause playback
+   */
   public pause() {
     if (!this._paused) {
       this.emit('pause');
@@ -140,6 +166,9 @@ export default class Player extends EventEmitter {
     }
   }
 
+  /**
+   * stop playback and rewind to start
+   */
   public stop() {
     this.emit('stop');
     this._numPlays = 0;
@@ -151,3 +180,187 @@ export default class Player extends EventEmitter {
     this.renderNextFrame();
   }
 }
+
+interface Player {
+  /**
+   * playback started
+   */
+  addListener(event: 'play', listener: () => void): this;
+  /**
+   * frame played
+   */
+  addListener(
+    event: 'frame',
+    listener: (currentFrameNumber: number) => void,
+  ): this;
+  /**
+   * playback paused
+   */
+  addListener(event: 'pause', listener: () => void): this;
+  /**
+   * playback stopped
+   */
+  addListener(event: 'stop', listener: () => void): this;
+  /**
+   * playback ended (for APNG with finite count of plays)
+   */
+  addListener(event: 'end', listener: () => void): this;
+
+  /**
+   * playback started
+   */
+  on(event: 'play', listener: () => void): this;
+  /**
+   * frame played
+   */
+  on(event: 'frame', listener: (currentFrameNumber: number) => void): this;
+  /**
+   * playback paused
+   */
+  on(event: 'pause', listener: () => void): this;
+  /**
+   * playback stopped
+   */
+  on(event: 'stop', listener: () => void): this;
+  /**
+   * playback ended (for APNG with finite count of plays)
+   */
+  on(event: 'end', listener: () => void): this;
+
+  /**
+   * playback started
+   */
+  once(event: 'play', listener: () => void): this;
+  /**
+   * frame played
+   */
+  once(event: 'frame', listener: (currentFrameNumber: number) => void): this;
+  /**
+   * playback paused
+   */
+  once(event: 'pause', listener: () => void): this;
+  /**
+   * playback stopped
+   */
+  once(event: 'stop', listener: () => void): this;
+  /**
+   * playback ended (for APNG with finite count of plays)
+   */
+  once(event: 'end', listener: () => void): this;
+
+  /**
+   * playback started
+   */
+  removeListener(event: 'play', listener: () => void): this;
+  /**
+   * frame played
+   */
+  removeListener(
+    event: 'frame',
+    listener: (currentFrameNumber: number) => void,
+  ): this;
+  /**
+   * playback paused
+   */
+  removeListener(event: 'pause', listener: () => void): this;
+  /**
+   * playback stopped
+   */
+  removeListener(event: 'stop', listener: () => void): this;
+  /**
+   * playback ended (for APNG with finite count of plays)
+   */
+  removeListener(event: 'end', listener: () => void): this;
+
+  /**
+   * playback started
+   */
+  off(event: 'play', listener: () => void): this;
+  /**
+   * frame played
+   */
+  off(event: 'frame', listener: (currentFrameNumber: number) => void): this;
+  /**
+   * playback paused
+   */
+  off(event: 'pause', listener: () => void): this;
+  /**
+   * playback stopped
+   */
+  off(event: 'stop', listener: () => void): this;
+  /**
+   * playback ended (for APNG with finite count of plays)
+   */
+  off(event: 'end', listener: () => void): this;
+
+  /**
+   * playback started
+   */
+  emit(event: 'play'): boolean;
+  /**
+   * frame played
+   */
+  emit(event: 'frame', currentFrameNumber: number): boolean;
+  /**
+   * playback paused
+   */
+  emit(event: 'pause'): boolean;
+  /**
+   * playback stopped
+   */
+  emit(event: 'stop'): boolean;
+  /**
+   * playback ended (for APNG with finite count of plays)
+   */
+  emit(event: 'end'): boolean;
+
+  /**
+   * playback started
+   */
+  prependListener(event: 'play', listener: () => void): this;
+  /**
+   * frame played
+   */
+  prependListener(
+    event: 'frame',
+    listener: (currentFrameNumber: number) => void,
+  ): this;
+  /**
+   * playback paused
+   */
+  prependListener(event: 'pause', listener: () => void): this;
+  /**
+   * playback stopped
+   */
+  prependListener(event: 'stop', listener: () => void): this;
+  /**
+   * playback ended (for APNG with finite count of plays)
+   */
+  prependListener(event: 'end', listener: () => void): this;
+
+  /**
+   * playback started
+   */
+  prependOnceListener(event: 'play', listener: () => void): this;
+  /**
+   * frame played
+   */
+  prependOnceListener(
+    event: 'frame',
+    listener: (currentFrameNumber: number) => void,
+  ): this;
+  /**
+   * playback paused
+   */
+  prependOnceListener(event: 'pause', listener: () => void): this;
+  /**
+   * playback stopped
+   */
+  prependOnceListener(event: 'stop', listener: () => void): this;
+  /**
+   * playback ended (for APNG with finite count of plays)
+   */
+  prependOnceListener(event: 'end', listener: () => void): this;
+}
+
+export default Player;

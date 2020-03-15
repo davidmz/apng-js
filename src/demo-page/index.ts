@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-shadow */
 /* eslint-disable no-param-reassign */
 import parseAPNG from '../library/parser';
@@ -124,7 +125,7 @@ function processFile(file: File) {
         player.playbackRate = playbackRate;
         const em = player.emit.bind(player);
         // eslint-disable-next-line @typescript-eslint/unbound-method
-        player.emit = (event, ...args) => {
+        player.emit = (event: string, ...args: any[]) => {
           log.unshift({ event, args });
           if (log.length > 10) {
             log.splice(10, log.length - 10);
@@ -135,7 +136,7 @@ function processFile(file: File) {
             )
             .join('\n');
 
-          return em(event, ...args);
+          return (em as any)(event, ...args);
         };
         player.play();
       });
