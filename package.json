@@ -5,6 +5,7 @@
   "homepage": "https://github.com/davidmz/apng-js",
   "repository": "davidmz/apng-js",
   "main": "lib/index.js",
+  "types": "types/library/parser.d.ts",
   "scripts": {
     "build": "webpack",
     "prepublish": "yarn build"
