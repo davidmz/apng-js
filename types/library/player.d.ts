@@ -1,4 +1,3 @@
-/// <reference types="node" />
 import { EventEmitter } from 'events';
 import { APNG, Frame } from './structs';
 declare class Player extends EventEmitter {

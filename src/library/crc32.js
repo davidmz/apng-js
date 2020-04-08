@@ -21,4 +21,4 @@ export default function (bytes, start = 0, length = bytes.length - start) {
     crc = (crc >>> 8) ^ table[(crc ^ bytes[i]) & 0xFF]
   }
   return crc ^ (-1)
-};
+}
