@@ -7,4 +7,4 @@ export declare function isNotAPNG(err: unknown): boolean;
  */
 export default function parseAPNG(buffer: ArrayBuffer): Error | APNG;
 
-export type { APNG, Frame };
+export { APNG, Frame };
