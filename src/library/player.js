@@ -114,7 +114,7 @@ export default class extends EventEmitter {
                 do {
                     this.renderNextFrame();
                     nextRenderTime += this.currentFrame.delay / this.playbackRate;
-                } while (!this._ended && now > nextRenderTime);
+                } while (!this._ended && !this._paused && now > nextRenderTime);
             }
             requestAnimationFrame(tick);
         };
