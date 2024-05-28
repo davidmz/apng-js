@@ -732,7 +732,7 @@
 	                    do {
 	                        _this2.renderNextFrame();
 	                        nextRenderTime += _this2.currentFrame.delay / _this2.playbackRate;
-	                    } while (!_this2._ended && now > nextRenderTime);
+	                    } while (!_this2._ended && !_this2._paused && now > nextRenderTime);
 	                }
 	                requestAnimationFrame(tick);
 	            };
