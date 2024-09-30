@@ -84,6 +84,10 @@
 	document.getElementById('stop-btn').addEventListener('click', function () {
 	  return player && player.stop();
 	});
+	
+	document.getElementById('play-peverse-btn').addEventListener('click', function () {
+	  return player.playReverseState = !player.playReverseState;
+	});
 
 	var playbackRate = 1.0;
 	document.getElementById('playback-rate').addEventListener('change', function (e) {
@@ -630,13 +634,14 @@
 
 	    /** @type {Frame} */
 
-	    /** @type {number} */
+	    /** @type {CanvasRenderingContext2D} */
 	    function _class(apng, context, autoPlay) {
 	        _classCallCheck(this, _class);
 
 	        var _this = _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this));
 
 	        _this.playbackRate = 1.0;
+	        _this.playReverseState = false;
 	        _this._currentFrameNumber = 0;
 	        _this._ended = false;
 	        _this._paused = true;
@@ -666,13 +671,22 @@
 
 	    /** @type {APNG} */
 
-	    /** @type {CanvasRenderingContext2D} */
+	    /** @type {number} */
 
 
 	    _createClass(_class, [{
 	        key: 'renderNextFrame',
 	        value: function renderNextFrame() {
-	            this._currentFrameNumber = (this._currentFrameNumber + 1) % this._apng.frames.length;
+	            if (this.playReverseState) {
+	                if (this._currentFrameNumber <= 0) {
+	                    this._currentFrameNumber = this._apng.frames.length - 1;
+	                } else {
+	                    this._currentFrameNumber = (this._currentFrameNumber - 1) % this._apng.frames.length;
+	                }
+	            } else {
+	                this._currentFrameNumber = (this._currentFrameNumber + 1) % this._apng.frames.length;
+	            }
+
 	            if (this._currentFrameNumber === this._apng.frames.length - 1) {
 	                this._numPlays++;
 	                if (this._apng.numPlays !== 0 && this._numPlays >= this._apng.numPlays) {
@@ -1111,19 +1125,6 @@
 	// add the styles to the DOM
 	var update = __webpack_require__(9)(content, {});
 	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!../../node_modules/css-loader/index.js!./style.css", function() {
-				var newContent = require("!!../../node_modules/css-loader/index.js!./style.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
 
 /***/ }),
 /* 7 */
@@ -1134,7 +1135,7 @@
 
 
 	// module
-	exports.push([module.id, ".apng-info,\r\n.apng-frames {\r\n    max-height: 600px;\r\n    overflow:   auto;\r\n}\r\n\r\n.apng-frames > div {\r\n    float:            left;\r\n    margin:           1px 1px 8px 8px;\r\n    box-shadow:       0 0 0 1px;\r\n    position:         relative;\r\n    background:       linear-gradient(45deg, #fff 25%, transparent 26%, transparent 75%, #fff 76%),\r\n                      linear-gradient(-45deg, #fff 25%, transparent 26%, transparent 75%, #fff 76%);\r\n    background-color: #eee;\r\n    background-size:  20px 20px;\r\n}\r\n\r\n.apng-frames > div > img {\r\n    position:   absolute;\r\n    box-shadow: 0 0 0 1px rgba(255, 0, 0, 0.75);\r\n}\r\n\r\n#playback-rate {\r\n    width:   12em;\r\n    display: inline-block;\r\n}\r\n\r\n.apng-log {\r\n    height: 10em;\r\n}", ""]);
+	exports.push([module.id, ".apng-info,\n.apng-frames {\n    max-height: 600px;\n    overflow:   auto;\n}\n\n.apng-frames > div {\n    float:            left;\n    margin:           1px 1px 8px 8px;\n    box-shadow:       0 0 0 1px;\n    position:         relative;\n    background:       linear-gradient(45deg, #fff 25%, transparent 26%, transparent 75%, #fff 76%),\n                      linear-gradient(-45deg, #fff 25%, transparent 26%, transparent 75%, #fff 76%);\n    background-color: #eee;\n    background-size:  20px 20px;\n}\n\n.apng-frames > div > img {\n    position:   absolute;\n    box-shadow: 0 0 0 1px rgba(255, 0, 0, 0.75);\n}\n\n#playback-rate {\n    width:   12em;\n    display: inline-block;\n}\n\n.apng-log {\n    height: 10em;\n}", ""]);
 
 	// exports
 
@@ -1248,9 +1249,6 @@
 		styleElementsInsertedAtTop = [];
 
 	module.exports = function(list, options) {
-		if(false) {
-			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-		}
 
 		options = options || {};
 		// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>

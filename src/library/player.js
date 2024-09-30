@@ -6,6 +6,9 @@ export default class extends EventEmitter {
     /** @type {number} */
     playbackRate = 1.0;
 
+    /** @type {boolean} */
+    playReverseState = false
+
     /** @type {APNG} */
     _apng;
     /** @type {Frame} */
@@ -54,7 +57,16 @@ export default class extends EventEmitter {
     }
 
     renderNextFrame() {
-        this._currentFrameNumber = (this._currentFrameNumber + 1) % this._apng.frames.length;
+        if(this.playReverseState) {
+            if(this._currentFrameNumber <= 0) {
+                this._currentFrameNumber = this._apng.frames.length - 1
+            }else {
+               this. _currentFrameNumber = (this._currentFrameNumber - 1)% this._apng.frames.length 
+            }
+        }else {
+            this._currentFrameNumber = (this._currentFrameNumber + 1) % this._apng.frames.length;
+        }
+
         if (this._currentFrameNumber === this._apng.frames.length - 1) {
             this._numPlays++;
             if (this._apng.numPlays !== 0 && this._numPlays >= this._apng.numPlays) {

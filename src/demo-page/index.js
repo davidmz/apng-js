@@ -27,6 +27,7 @@ document.getElementById('play-pause-btn').addEventListener('click', () => {
 })
 
 document.getElementById('stop-btn').addEventListener('click', () => player && player.stop())
+document.getElementById('play-peverse-btn').addEventListener('click', () => player.playReverseState =  !player.playReverseState)
 
 let playbackRate = 1.0
 document.getElementById('playback-rate').addEventListener('change', e => {

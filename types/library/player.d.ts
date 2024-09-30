@@ -6,6 +6,7 @@ declare class Player extends EventEmitter {
      * animation playback rate
      */
     playbackRate: number;
+    playReverseState:boolean;
     private _apng;
     private _prevFrame?;
     private _prevFrameData;
