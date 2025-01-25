@@ -641,7 +641,7 @@
 	        _this._ended = false;
 	        _this._paused = true;
 	        _this._numPlays = 0;
-
+	        _this._rafId = null;
 	        _this._apng = apng;
 	        _this.context = context;
 	        _this.stop();
@@ -712,6 +712,10 @@
 	        value: function play() {
 	            var _this2 = this;
 
+	            if (this._rafId) {
+                cancelAnimationFrame(this._rafId);
+	            }
+
 	            this.emit('play');
 
 	            if (this._ended) {
@@ -734,14 +738,18 @@
 	                        nextRenderTime += _this2.currentFrame.delay / _this2.playbackRate;
 	                    } while (!_this2._ended && !_this2._paused && now > nextRenderTime);
 	                }
-	                requestAnimationFrame(tick);
+	                _this2._rafId = requestAnimationFrame(tick);
 	            };
-	            requestAnimationFrame(tick);
+	            _this2._rafId = requestAnimationFrame(tick);
 	        }
 	    }, {
 	        key: 'pause',
 	        value: function pause() {
 	            if (!this._paused) {
+	                if (this._rafId) {
+                    cancelAnimationFrame(this._rafId);
+                    this._rafId = null;
+	                }
 	                this.emit('pause');
 	                this._paused = true;
 	            }
@@ -749,6 +757,10 @@
 	    }, {
 	        key: 'stop',
 	        value: function stop() {
+	            if (this._rafId) {
+                cancelAnimationFrame(this._rafId);
+                this._rafId = null;
+	            }
 	            this.emit('stop');
 	            this._numPlays = 0;
 	            this._ended = false;
