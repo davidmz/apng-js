@@ -21,6 +21,8 @@ export default class extends EventEmitter {
     _paused = true;
     /** @type {number} */
     _numPlays = 0;
+    /** @type {number|null} */
+    _rafId = null;
 
     /**
      * @param {APNG} apng
@@ -94,6 +96,10 @@ export default class extends EventEmitter {
     get ended() { return this._ended; }
 
     play() {
+        if (this._rafId) {
+            cancelAnimationFrame(this._rafId);
+        }
+
         this.emit('play');
 
         if (this._ended) {
@@ -116,19 +122,27 @@ export default class extends EventEmitter {
                     nextRenderTime += this.currentFrame.delay / this.playbackRate;
                 } while (!this._ended && !this._paused && now > nextRenderTime);
             }
-            requestAnimationFrame(tick);
+            this._rafId = requestAnimationFrame(tick);
         };
-        requestAnimationFrame(tick);
+        this._rafId = requestAnimationFrame(tick);
     }
 
     pause() {
         if (!this._paused) {
+            if (this._rafId) {
+                cancelAnimationFrame(this._rafId);
+                this._rafId = null;
+            }
             this.emit('pause');
             this._paused = true;
         }
     }
 
     stop() {
+        if (this._rafId) {
+            cancelAnimationFrame(this._rafId);
+            this._rafId = null;
+        }
         this.emit('stop');
         this._numPlays = 0;
         this._ended = false;
