@@ -624,13 +624,17 @@
 	     * @param {boolean} autoPlay
 	     */
 
+	    /** @type {number} */
+
+
 	    /** @type {boolean} */
 
-	    /** @type {number} */
+	    /** @type {ImageData} */
 
-	    /** @type {Frame} */
 
-	    /** @type {number} */
+	    /** @type {APNG} */
+
+	    /** @type {CanvasRenderingContext2D} */
 	    function _class(apng, context, autoPlay) {
 	        _classCallCheck(this, _class);
 
@@ -642,6 +646,7 @@
 	        _this._paused = true;
 	        _this._numPlays = 0;
 	        _this._rafId = null;
+
 	        _this._apng = apng;
 	        _this.context = context;
 	        _this.stop();
@@ -656,17 +661,15 @@
 	     * @return {number}
 	     */
 
-	    /** @type {number} */
-
+	    /** @type {number|null} */
 
 	    /** @type {boolean} */
 
-	    /** @type {ImageData} */
+	    /** @type {number} */
 
+	    /** @type {Frame} */
 
-	    /** @type {APNG} */
-
-	    /** @type {CanvasRenderingContext2D} */
+	    /** @type {number} */
 
 
 	    _createClass(_class, [{
@@ -713,7 +716,7 @@
 	            var _this2 = this;
 
 	            if (this._rafId) {
-                cancelAnimationFrame(this._rafId);
+	                cancelAnimationFrame(this._rafId);
 	            }
 
 	            this.emit('play');
@@ -740,15 +743,15 @@
 	                }
 	                _this2._rafId = requestAnimationFrame(tick);
 	            };
-	            _this2._rafId = requestAnimationFrame(tick);
+	            this._rafId = requestAnimationFrame(tick);
 	        }
 	    }, {
 	        key: 'pause',
 	        value: function pause() {
 	            if (!this._paused) {
 	                if (this._rafId) {
-                    cancelAnimationFrame(this._rafId);
-                    this._rafId = null;
+	                    cancelAnimationFrame(this._rafId);
+	                    this._rafId = null;
 	                }
 	                this.emit('pause');
 	                this._paused = true;
@@ -758,8 +761,8 @@
 	        key: 'stop',
 	        value: function stop() {
 	            if (this._rafId) {
-                cancelAnimationFrame(this._rafId);
-                this._rafId = null;
+	                cancelAnimationFrame(this._rafId);
+	                this._rafId = null;
 	            }
 	            this.emit('stop');
 	            this._numPlays = 0;
